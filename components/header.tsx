@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { MenuIcon, X, Sun, Moon, Globe } from 'lucide-react'
+import { MenuIcon, X, Sun, Moon, Globe, ShoppingBag } from 'lucide-react'
 import { useLanguage } from '@/lib/language-context'
 import { translations } from '@/lib/translations'
 
@@ -44,7 +44,7 @@ export function Header() {
             {[
               { name: t.home, href: '/' },
               { name: t.menu, href: '/menu' },
-              { name: t.booking, href: '/order' },
+              { name: t.about, href: '/about' },
             ].map((link) => (
               <Link
                 key={link.name}
@@ -68,7 +68,14 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-1 md:gap-4 flex-1 justify-end">
+          <div className="flex items-center gap-1 md:gap-3 flex-1 justify-end">
+            <Link
+              href="/order"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-full transition-all text-xs font-bold"
+            >
+              <ShoppingBag size={14} />
+              <span className="hidden sm:inline">{t.booking}</span>
+            </Link>
             <button
               onClick={toggleTheme}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-300"
@@ -91,6 +98,7 @@ export function Header() {
               {[
                 { name: t.home, href: '/' },
                 { name: t.menu, href: '/menu' },
+                { name: t.about, href: '/about' },
                 { name: t.booking, href: '/order' },
               ].map((link) => (
                 <Link

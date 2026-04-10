@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useLanguage } from '@/lib/language-context'
 import { translations } from '@/lib/translations'
 import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react'
@@ -11,7 +12,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-100 dark:bg-[#0A0A0A] text-black dark:text-white py-12 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="space-y-2">
             <h3 className="text-lg font-bold text-amber-600 dark:text-amber-500">
               {lang === 'en' ? 'About Us' : 'ہمارے بارے میں'}
@@ -21,6 +22,26 @@ export function Footer() {
                 ? 'Authentic Chinese cuisine delivered to your door with fresh ingredients and traditional recipes.'
                 : 'مستند چینی کھانا آپ کے دروازے پر پہنچایا گیا۔ تازہ اجزاء، روایتی ترکیبیں۔'}
             </p>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-lg font-bold text-amber-600 dark:text-amber-500">
+              {lang === 'en' ? 'Quick Links' : 'فوری روابط'}
+            </h3>
+            <div className="flex flex-col space-y-2 text-sm">
+              <Link href="/" className="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
+                {t.home}
+              </Link>
+              <Link href="/menu" className="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
+                {t.menu}
+              </Link>
+              <Link href="/about" className="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
+                {t.about}
+              </Link>
+              <Link href="/order" className="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
+                {t.booking}
+              </Link>
+            </div>
           </div>
 
           <div className="space-y-3">

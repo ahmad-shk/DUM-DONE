@@ -6,6 +6,7 @@ import { LanguageProvider } from "@/lib/language-context"
 import { FirebaseAuthProvider } from "@/lib/firebase-context"
 import { CartProvider } from "@/lib/cart-context"
 import { CartButton } from "@/components/cart-button"
+import { WhatsAppContact } from "@/components/whatsapp-contact"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -30,6 +31,7 @@ export default function RootLayout({
             <CartProvider>
               {children}
               <CartButton />
+              <WhatsAppContact />
             </CartProvider>
           </LanguageProvider>
         </FirebaseAuthProvider>

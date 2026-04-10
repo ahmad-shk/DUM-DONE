@@ -9,7 +9,7 @@ import { translations } from '@/lib/translations'
 import { Star, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import { useCart } from '@/lib/cart-context'
-import { WhatsAppContact } from '@/components/whatsapp-contact'
+
 
 export default function MenuPage() {
   const { lang } = useLanguage()
@@ -124,7 +124,6 @@ export default function MenuPage() {
 
 
       <Footer />
-      <WhatsAppContact />
     </main>
   )
 }

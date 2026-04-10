@@ -1,10 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { MessageCircle, X } from 'lucide-react'
 
 export function WhatsAppContact() {
   const [showMenu, setShowMenu] = useState(false)
+  const pathname = usePathname()
+
+  // Hide on menu page
+  if (pathname === '/menu') {
+    return null
+  }
 
   const contacts = [
     {
@@ -37,11 +44,11 @@ export function WhatsAppContact() {
         />
       )}
 
-      {/* WhatsApp Contact Button - Always visible, below cart button */}
-      <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end">
-        {/* Popup Menu - appears above the button with higher z-index */}
+      {/* WhatsApp Contact Button - Fixed position */}
+      <div className="fixed bottom-6 right-6 z-[999] flex items-center">
+        {/* Popup Menu - appears on LEFT side of button */}
         {showMenu && (
-          <div className="absolute bottom-full right-0 mb-3 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 p-3 space-y-2 animate-in fade-in slide-in-from-bottom-2 duration-200 z-[1002]">
+          <div className="absolute right-full bottom-0 mr-3 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 p-3 space-y-2 animate-in fade-in slide-in-from-right-2 duration-200 z-[1002]">
             {contacts.map((contact) => (
               <button
                 key={contact.phone}
