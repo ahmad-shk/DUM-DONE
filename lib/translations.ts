@@ -195,7 +195,7 @@ export const translations = {
       address: "پتہ",
       addressText: "KETZERGASSE 299\n2380 PERCHTOLDSDORF",
       contactTitle: "ای میل اور فون",
-      email: "office@lins-kitchen.at",
+      email: "dumanddone.restaurant@gmail.com",
       phone: "01 / 88 99 308",
     },
     footer: {

@@ -30,15 +30,16 @@ export function Footer() {
             <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+92-3084948853</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>hello@dumanddone.com</span>
+                <span>dumanddone.restaurant@gmail.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                <span>123 Food Street, Restaurant City, RC 12345</span>
+                <span>DHA RAHBAR PHASE 11
+SECtOR 1, LAHORE</span>
               </div>
             </div>
           </div>
