@@ -57,7 +57,22 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     try {
-      const app = getApp().name === '[DEFAULT]' ? getApp() : initializeApp(firebaseConfig)
+      // Check if Firebase config is properly set
+      const isConfigured = Object.values(firebaseConfig).every(val => val && val !== "")
+      
+      if (!isConfigured) {
+        console.info('[v0] Firebase credentials not configured. Auth features will be disabled.')
+        setLoading(false)
+        return
+      }
+
+      let app
+      try {
+        app = getApp()
+      } catch {
+        app = initializeApp(firebaseConfig)
+      }
+
       const authInstance = getAuth(app)
       const dbInstance = getFirestore(app)
       
@@ -78,7 +93,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
       return () => unsubscribe()
     } catch (error) {
-      console.error("[v0] Firebase initialization error:", error)
+      console.info("[v0] Firebase unavailable. Using offline mode.")
       setLoading(false)
     }
   }, [])

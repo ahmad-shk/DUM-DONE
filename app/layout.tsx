@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { LanguageProvider } from "@/lib/language-context"
 import { FirebaseAuthProvider } from "@/lib/firebase-context"
+import { CartProvider } from "@/lib/cart-context"
+import { CartButton } from "@/components/cart-button"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -24,7 +26,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased`}>
         <FirebaseAuthProvider>
-          <LanguageProvider>{children}</LanguageProvider>
+          <LanguageProvider>
+            <CartProvider>
+              {children}
+              <CartButton />
+            </CartProvider>
+          </LanguageProvider>
         </FirebaseAuthProvider>
         <Analytics />
       </body>
