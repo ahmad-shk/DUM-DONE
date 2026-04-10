@@ -27,7 +27,7 @@ export function Menu() {
       name: item.name,
       price: item.price,
       category: item.category,
-      image: item.image || '/mask-group.jpg',
+      image: item.image || '/Mottonkarahi.jpeg',
     })
   }
 

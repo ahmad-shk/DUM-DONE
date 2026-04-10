@@ -35,14 +35,14 @@ export function Hero() {
           </Button>
 
           {/* Place Order Button */}
-          <Button
+          {/* <Button
             size="lg"
             variant="outline"
             className="bg-[#000000] hover:bg-[#1A1A1A] text-white hover:text-white border-white w-full sm:w-auto transition-colors duration-300"
             onClick={() => window.location.href = "/login"}
           >
             {t.hero.bookReservation}
-          </Button>
+          </Button> */}
         </div>
       </div>
     </section>
