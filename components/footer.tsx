@@ -60,7 +60,7 @@ export function Footer() {
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 <span>DHA RAHBAR PHASE 11
-SECtOR 1, LAHORE</span>
+                  SECtOR 1, LAHORE</span>
               </div>
             </div>
           </div>
@@ -94,8 +94,13 @@ SECtOR 1, LAHORE</span>
 
         <div className="border-t border-gray-300 dark:border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-2xl font-black text-black dark:text-white">
-              DUM & DONE
+            <div className="text-2xl font-black text-black dark:text-white p-4">
+              <img
+                src="../DUM_AND_DONE_LOGO-.png"
+                alt="Dum and Dun Kitchen Logo"
+                style={{ width: '600px', height: '180px' }} // Dono dimensions barha diye hain
+                className="object-contain"
+              />
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-right">
               {lang === 'en'

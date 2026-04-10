@@ -69,7 +69,7 @@ export function Menu() {
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-200 dark:bg-gray-900">
                 <Image
-                  src={item.image || '/mask-group.jpg'}
+                  src={item.image || '/Mottonkarahi.jpeg'}
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"

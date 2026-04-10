@@ -47,7 +47,7 @@ export function FeaturedDishes() {
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-gray-200 dark:bg-gray-900">
                 <Image
-                  src={item.image || '/mask-group.jpg'}
+                  src={item.image || ''}
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
