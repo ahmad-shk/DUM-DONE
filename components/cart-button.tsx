@@ -17,7 +17,7 @@ export function CartButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 right-6 bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 z-50 hover:scale-110 active:scale-95"
+        className="fixed bottom-24 right-6 bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 z-[999] hover:scale-110 active:scale-95"
       >
         <ShoppingCart className="w-6 h-6" />
         <span className="font-bold text-lg">{totalItems}</span>

@@ -80,7 +80,7 @@ export function Header() {
               className="flex items-center gap-1 px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all text-xs font-bold border border-transparent hover:border-gray-200 dark:hover:border-white/10"
             >
               <Globe size={14} />
-              <span className="uppercase">{lang}</span>
+              <span className="uppercase">{lang === 'en' ? 'EN' : 'اردو'}</span>
             </button>
           </div>
         </div>

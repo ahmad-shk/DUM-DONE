@@ -29,10 +29,19 @@ export function WhatsAppContact() {
 
   return (
     <>
-      {/* WhatsApp Contact Button */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3" style={{ bottom: '6rem' }}>
+      {/* Overlay when menu is open */}
+      {showMenu && (
+        <div
+          className="fixed inset-0 z-[998]"
+          onClick={() => setShowMenu(false)}
+        />
+      )}
+
+      {/* WhatsApp Contact Button - Always visible, below cart button */}
+      <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end">
+        {/* Popup Menu - appears above the button with higher z-index */}
         {showMenu && (
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 p-3 space-y-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="absolute bottom-full right-0 mb-3 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 p-3 space-y-2 animate-in fade-in slide-in-from-bottom-2 duration-200 z-[1002]">
             {contacts.map((contact) => (
               <button
                 key={contact.phone}
@@ -59,14 +68,6 @@ export function WhatsAppContact() {
           )}
         </button>
       </div>
-
-      {/* Overlay when menu is open */}
-      {showMenu && (
-        <div
-          className="fixed inset-0 z-30"
-          onClick={() => setShowMenu(false)}
-        />
-      )}
     </>
   )
 }

@@ -39,14 +39,14 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
+          className="fixed inset-0 bg-black/50 z-[1000] transition-opacity duration-300"
           style={{ opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'auto' : 'none' }}
         />
       )}
 
       {/* Drawer */}
       <div
-        className={`fixed right-0 top-0 h-full w-full max-w-md bg-white dark:bg-black border-l border-gray-200 dark:border-gray-800 shadow-2xl z-50 flex flex-col transition-transform duration-300 ${
+        className={`fixed right-0 top-0 h-full w-full max-w-md bg-white dark:bg-black border-l border-gray-200 dark:border-gray-800 shadow-2xl z-[1001] flex flex-col transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
