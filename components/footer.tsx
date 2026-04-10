@@ -14,18 +14,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div className="space-y-2">
             <h3 className="text-lg font-bold text-amber-600 dark:text-amber-500">
-              {lang === 'en' ? 'About Us' : '关于我们'}
+              {lang === 'en' ? 'About Us' : 'ہمارے بارے میں'}
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
               {lang === 'en'
                 ? 'Authentic Chinese cuisine delivered to your door with fresh ingredients and traditional recipes.'
-                : '正宗中菜送到家。新鲜食材，传统食谱。'}
+                : 'مستند چینی کھانا آپ کے دروازے پر پہنچایا گیا۔ تازہ اجزاء، روایتی ترکیبیں۔'}
             </p>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-lg font-bold text-amber-600 dark:text-amber-500">
-              {lang === 'en' ? 'Contact' : '联系我们'}
+              {lang === 'en' ? 'Contact' : 'ہم سے رابطہ کریں۔'}
             </h3>
             <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export function Footer() {
 
           <div className="space-y-3">
             <h3 className="text-lg font-bold text-amber-600 dark:text-amber-500">
-              {lang === 'en' ? 'Follow Us' : '关注我们'}
+              {lang === 'en' ? 'Follow Us' : 'ہمیں فالو کریں'}
             </h3>
             <div className="flex gap-4">
               <a
@@ -78,7 +78,7 @@ export function Footer() {
             <p className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-right">
               {lang === 'en'
                 ? '© 2024 DUM & DONE. All rights reserved.'
-                : '© 2024 DUM & DONE。保留所有权利。'}
+                : '© 2024 DUM & DONE. جملہ حقوق محفوظ ہیں۔'}
             </p>
           </div>
         </div>
