@@ -90,10 +90,10 @@ export const translations = {
       hours: "Hours",
       hoursText: "Tuesday – Sunday\n11:30 AM – 2:30 PM\n5:30 PM – 10:30 PM",
       address: "Address",
-      addressText: "KETZERGASSE 299\n2380 PERCHTOLDSDORF",
+      addressText: "DHA RAHBAR PHASE 11 \nSECtOR 1, LAHORE",
       contactTitle: "Email & Phone",
-      email: "office@lins-kitchen.at",
-      phone: "01 / 88 99 308",
+      email: "dumanddone.restaurant@gmail.com",
+      phone: "+923084948853",
     },
     footer: {
       copyright: "ALL COPYRIGHT RESERVED",
@@ -110,7 +110,7 @@ export const translations = {
       menu: "مینو",
       booking: "آرڈر کریں",
       call: "ہمیں کال کریں",
-      phone: "01 / 88 99 308",
+      phone: "+923084948853",
     },
     hero: {
       title: "DUM & DONE",
