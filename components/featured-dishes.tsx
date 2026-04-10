@@ -24,7 +24,7 @@ export function FeaturedDishes() {
       category: 'Signature',
       image: item.image || '/mask-group.jpg',
     })
-    setTimeout(() => router.push('/menu'), 300)
+    // setTimeout(() => router.push('/menu'), 300)
   }
 
   return (
