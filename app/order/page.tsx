@@ -6,10 +6,12 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { useFirebaseAuth } from '@/lib/firebase-context'
 import { useLanguage } from '@/lib/language-context'
 import { Spinner } from '@/components/ui/spinner'
-import { ArrowLeft, Truck, MapPin, Phone, Mail, User, Package, LogOut } from 'lucide-react'
+import { ArrowLeft, Truck, MapPin, Phone, Mail, User, Package, ShoppingBag } from 'lucide-react'
+
+// Note: addOrder function ko ab aap apne backend ya firebase service se direct import kar sakte hain
+// Bina login context ke.
 
 interface OrderItem {
   id: string
@@ -25,10 +27,11 @@ interface OrderItem {
 }
 
 export default function OrderPage() {
-  const { user, userData, loading, orders, addOrder, logout } = useFirebaseAuth()
   const router = useRouter()
   const { lang } = useLanguage()
-  const [activeTab, setActiveTab] = useState<'profile' | 'history' | 'new'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'history' | 'new'>('new')
+  const [loading, setLoading] = useState(true)
+  const [orders, setOrders] = useState<OrderItem[]>([])
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -40,65 +43,69 @@ export default function OrderPage() {
   })
   const [submitting, setSubmitting] = useState(false)
   const [cartItems, setCartItems] = useState<any[]>([])
-  const [showOrderForm, setShowOrderForm] = useState(false)
+  const [showOrderForm, setShowOrderForm] = useState(true)
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login')
-    }
-    
-    // Pre-fill form with user data
-    if (userData) {
-      setFormData(prev => ({
-        ...prev,
-        name: userData.name || '',
-        phone: userData.phone || '',
-        address: userData.address || '',
-      }))
-    }
-    
-    // Retrieve cart items from sessionStorage if available
+    // Session Storage se cart uthana
     if (typeof window !== 'undefined') {
       const storedCart = sessionStorage.getItem('cartItems')
       if (storedCart) {
         try {
           const parsedCart = JSON.parse(storedCart)
           setCartItems(parsedCart)
-          sessionStorage.removeItem('cartItems')
+          // Order page par aane ke baad cart clear nahi karte jab tak order place na ho jaye
         } catch (error) {
-          console.error('[v0] Error parsing cart items:', error)
+          console.error('Error parsing cart items:', error)
         }
       }
+
+      // Local storage se purani orders ki history dikhane ke liye (Optional)
+      const savedOrders = localStorage.getItem('guestOrders')
+      if (savedOrders) {
+        setOrders(JSON.parse(savedOrders))
+      }
     }
-  }, [user, userData, loading, router])
+    setLoading(false)
+  }, [])
 
   const handleAddOrder = async (e: React.FormEvent) => {
     e.preventDefault()
     if (cartItems.length === 0) {
-      alert('Please add items from menu')
+      alert(lang === 'en' ? 'Please add items from menu' : '请从菜单中添加商品')
       return
     }
 
     setSubmitting(true)
     try {
-      await addOrder({
+      const newOrder: OrderItem = {
+        id: Math.random().toString(36).substr(2, 9),
         ...formData,
         items: cartItems,
         total: getTotalPrice(),
         status: 'pending',
-      })
+        createdAt: new Date().toISOString(),
+      }
+
+      // Yahan aap apni Firebase Firestore logic call kar sakte hain bina user.uid ke
+      // await db.collection('orders').add(newOrder)
+
+      // Local state update karein history dikhane ke liye
+      const updatedOrders = [newOrder, ...orders]
+      setOrders(updatedOrders)
+      localStorage.setItem('guestOrders', JSON.stringify(updatedOrders))
+
       setFormData({
-        name: userData?.name || '',
-        phone: userData?.phone || '',
-        address: userData?.address || '',
+        name: '',
+        phone: '',
+        address: '',
         deliveryDate: '',
         deliveryTime: '',
         items: [],
         notes: '',
       })
       setCartItems([])
-      setShowOrderForm(false)
-      alert('Order placed successfully!')
+      sessionStorage.removeItem('cartItems')
+      alert(lang === 'en' ? 'Order placed successfully!' : '订单提交成功！')
       setActiveTab('history')
     } catch (error) {
       console.error('Error placing order:', error)
@@ -116,16 +123,9 @@ export default function OrderPage() {
   }
 
   const removeFromCart = (index: number) => {
-    setCartItems(prevItems => prevItems.filter((_, i) => i !== index))
-  }
-
-  const handleLogout = async () => {
-    try {
-      await logout()
-      router.push('/')
-    } catch (error) {
-      console.error('Error logging out:', error)
-    }
+    const updatedCart = cartItems.filter((_, i) => i !== index)
+    setCartItems(updatedCart)
+    sessionStorage.setItem('cartItems', JSON.stringify(updatedCart))
   }
 
   if (loading) {
@@ -134,10 +134,6 @@ export default function OrderPage() {
         <Spinner />
       </main>
     )
-  }
-
-  if (!user) {
-    return null
   }
 
   return (
@@ -153,68 +149,27 @@ export default function OrderPage() {
               className="flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-4 font-semibold"
             >
               <ArrowLeft size={20} />
-              Back
+              {lang === 'en' ? 'Back to Menu' : '返回菜单'}
             </button>
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-bold text-black dark:text-white mb-2">
-                  {lang === 'en' ? 'Your Account' : '您的账户'}
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {user.email}
-                </p>
-              </div>
-              <Button
-                onClick={handleLogout}
-                variant="outline"
-                className="flex items-center gap-2 border-red-300 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20"
-              >
-                <LogOut size={18} />
-                Logout
-              </Button>
-            </div>
+            <h1 className="text-4xl font-bold text-black dark:text-white mb-2">
+              {lang === 'en' ? 'Checkout' : '结账'}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              {lang === 'en' ? 'Complete your order details below' : '请在下面填写您的订单详情'}
+            </p>
           </div>
-
-          {/* User Profile Card */}
-          <Card className="p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/40 rounded-2xl mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center">
-                <User className="w-8 h-8 text-white" />
-              </div>
-              <div className="flex-1">
-                <h2 className="text-xl font-bold text-black dark:text-white">
-                  {userData?.name || user.email?.split('@')[0] || 'User'}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">{user.email}</p>
-                {userData?.phone && (
-                  <p className="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-1 mt-1">
-                    <Phone size={14} /> {userData.phone}
-                  </p>
-                )}
-              </div>
-              <div className="text-right">
-                <div className="flex items-center gap-2 text-amber-600">
-                  <Package size={20} />
-                  <span className="font-bold text-2xl">{orders.length}</span>
-                </div>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  {lang === 'en' ? 'Orders' : '订单'}
-                </p>
-              </div>
-            </div>
-          </Card>
 
           {/* Tabs */}
           <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-white/10">
             <button
-              onClick={() => setActiveTab('profile')}
+              onClick={() => setActiveTab('new')}
               className={`pb-4 font-semibold transition-colors ${
-                activeTab === 'profile'
+                activeTab === 'new'
                   ? 'text-amber-600 border-b-2 border-amber-600'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
               }`}
             >
-              {lang === 'en' ? 'Profile' : '个人资料'}
+              {lang === 'en' ? 'Place Order' : '下单'}
             </button>
             <button
               onClick={() => setActiveTab('history')}
@@ -224,97 +179,183 @@ export default function OrderPage() {
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
               }`}
             >
-              {lang === 'en' ? 'Order History' : '订单历史'} ({orders.length})
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab('new')
-                setShowOrderForm(true)
-              }}
-              className={`pb-4 font-semibold transition-colors ${
-                activeTab === 'new'
-                  ? 'text-amber-600 border-b-2 border-amber-600'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-              }`}
-            >
-              {lang === 'en' ? 'Place Order' : '下单'}
+              {/* {lang === 'en' ? 'Recent Orders' : '近期订单'} ({orders.length}) */}
             </button>
           </div>
 
-          {/* Profile Tab */}
-          {activeTab === 'profile' && (
-            <Card className="p-8 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-2xl">
-              <h2 className="text-2xl font-bold text-black dark:text-white mb-6">
-                {lang === 'en' ? 'Account Information' : '账户信息'}
-              </h2>
-              
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <p className="text-gray-600 dark:text-gray-400 text-xs uppercase tracking-wide mb-1">
-                      Email
-                    </p>
-                    <p className="font-semibold text-black dark:text-white flex items-center gap-2">
-                      <Mail size={16} className="text-amber-600" />
-                      {user.email}
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-gray-600 dark:text-gray-400 text-xs uppercase tracking-wide mb-1">
-                      {lang === 'en' ? 'Member Since' : '注册时间'}
-                    </p>
-                    <p className="font-semibold text-black dark:text-white">
-                      {userData?.createdAt 
-                        ? new Date(userData.createdAt?.toDate?.() || userData.createdAt).toLocaleDateString()
-                        : 'N/A'
-                      }
-                    </p>
-                  </div>
-                </div>
+          {/* Place Order Tab */}
+          {activeTab === 'new' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Form Section */}
+              <div className="lg:col-span-2">
+                <Card className="p-8 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-2xl">
+                  <form onSubmit={handleAddOrder} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                          {lang === 'en' ? 'Full Name' : '姓名'}
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none"
+                        />
+                      </div>
 
-                {userData?.address && (
-                  <div>
-                    <p className="text-gray-600 dark:text-gray-400 text-xs uppercase tracking-wide mb-1">
-                      {lang === 'en' ? 'Saved Address' : '保存的地址'}
-                    </p>
-                    <p className="font-semibold text-black dark:text-white flex items-center gap-2">
-                      <MapPin size={16} className="text-amber-600" />
-                      {userData.address}
-                    </p>
-                  </div>
-                )}
+                      <div>
+                        <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                          {lang === 'en' ? 'Phone Number' : '电话'}
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none"
+                        />
+                      </div>
+                    </div>
 
-                <div className="pt-6 border-t border-gray-200 dark:border-white/10">
-                  <Button
-                    onClick={() => router.push('/menu')}
-                    className="bg-amber-600 hover:bg-amber-700 text-white"
-                  >
-                    {lang === 'en' ? 'Browse Menu' : '浏览菜单'}
-                  </Button>
-                </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                        {lang === 'en' ? 'Delivery Address' : '配送地址'}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Street, Building, Apartment No."
+                        value={formData.address}
+                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                        className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                          {lang === 'en' ? 'Delivery Date' : '配送日期'}
+                        </label>
+                        <input
+                          type="date"
+                          required
+                          value={formData.deliveryDate}
+                          onChange={(e) => setFormData({ ...formData, deliveryDate: e.target.value })}
+                          className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                          {lang === 'en' ? 'Delivery Time' : '配送时间'}
+                        </label>
+                        <input
+                          type="time"
+                          required
+                          value={formData.deliveryTime}
+                          onChange={(e) => setFormData({ ...formData, deliveryTime: e.target.value })}
+                          className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                        {lang === 'en' ? 'Special Instructions' : '特殊说明'}
+                      </label>
+                      <textarea
+                        value={formData.notes}
+                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        rows={3}
+                        placeholder={lang === 'en' ? 'Any allergies or delivery notes...' : '过敏要求或备注...'}
+                        className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none"
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      disabled={submitting || cartItems.length === 0}
+                      className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 text-lg rounded-xl shadow-lg shadow-amber-600/20"
+                    >
+                      {submitting ? (lang === 'en' ? 'Processing...' : '正在处理...') : (lang === 'en' ? 'Confirm Order' : '确认订单')}
+                    </Button>
+                  </form>
+                </Card>
               </div>
-            </Card>
+
+              {/* Order Summary Section */}
+              <div className="lg:col-span-1">
+                <Card className="p-6 bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-2xl sticky top-32">
+                  <h3 className="text-xl font-bold text-black dark:text-white mb-4 flex items-center gap-2">
+                    <ShoppingBag className="text-amber-600" />
+                    {lang === 'en' ? 'Order Summary' : '订单摘要'}
+                  </h3>
+                  
+                  {cartItems.length > 0 ? (
+                    <div className="space-y-4">
+                      <div className="max-h-[300px] overflow-y-auto pr-2 space-y-3">
+                        {cartItems.map((item, idx) => (
+                          <div key={idx} className="flex justify-between items-start gap-4 text-sm border-b border-gray-100 dark:border-white/5 pb-2">
+                            <div className="flex-1">
+                              <p className="font-medium text-black dark:text-white">{item.name}</p>
+                              <p className="text-gray-500 text-xs">Qty: {item.quantity || 1}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-bold text-black dark:text-white">Rs {(parseFloat(item.price) * (item.quantity || 1)).toFixed(2)}</p>
+                              <button 
+                                onClick={() => removeFromCart(idx)}
+                                className="text-red-500 text-[10px] hover:underline"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="pt-4 border-t-2 border-dashed border-gray-200 dark:border-white/10">
+                        <div className="flex justify-between items-center text-xl font-bold">
+                          <span className="text-black dark:text-white">Total</span>
+                          <span className="text-amber-600">Rs {getTotalPrice()}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500 mb-4 text-sm">Your cart is empty</p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => router.push('/menu')}
+                        className="w-full border-amber-600 text-amber-600"
+                      >
+                        Browse Menu
+                      </Button>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            </div>
           )}
 
           {/* Order History Tab */}
-          {activeTab === 'history' && (
+          {/* {activeTab === 'history' && (
             <div className="space-y-6">
               {orders.length === 0 ? (
                 <Card className="p-12 text-center bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10">
                   <Truck className="w-16 h-16 mx-auto text-gray-400 mb-4" />
                   <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
-                    {lang === 'en' ? 'No orders yet. Start ordering now!' : '还没有订单。现在开始订购！'}
+                    {lang === 'en' ? 'No recent orders found.' : '未发现近期订单。'}
                   </p>
                   <Button
-                    onClick={() => router.push('/menu')}
+                    onClick={() => setActiveTab('new')}
                     className="bg-amber-600 hover:bg-amber-700 text-white"
                   >
-                    {lang === 'en' ? 'Go to Menu' : '去菜单'}
+                    {lang === 'en' ? 'Start Ordering' : '开始订购'}
                   </Button>
                 </Card>
               ) : (
-                orders.map((order: OrderItem, idx) => (
+                orders.map((order, idx) => (
                   <Card
                     key={idx}
                     className="p-6 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-2xl"
@@ -322,227 +363,41 @@ export default function OrderPage() {
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <p className="text-gray-600 dark:text-gray-400 text-xs">
-                          Order #{order.id?.slice(-6).toUpperCase() || idx + 1}
+                          Order ID: #{order.id.toUpperCase()}
                         </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-500">
+                        <p className="text-sm text-gray-500">
                           {new Date(order.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <span className={`inline-block px-4 py-2 rounded-full text-xs font-bold ${
-                        order.status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
-                        order.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
-                        'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300'
-                      }`}>
-                        {order.status?.toUpperCase() || 'PENDING'}
+                      <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-full text-xs font-bold uppercase">
+                        {order.status}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div>
-                        <h3 className="font-bold text-lg text-black dark:text-white mb-4">
-                          {lang === 'en' ? 'Delivery Details' : '配送详情'}
-                        </h3>
-                        <div className="space-y-3 text-sm">
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <MapPin size={16} className="text-amber-600" />
-                            <span>{order.address || 'Address not provided'}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                            <Phone size={16} className="text-amber-600" />
-                            <span>{order.phone || 'Phone not provided'}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="font-bold text-lg text-black dark:text-white mb-4">
-                          {lang === 'en' ? 'Delivery Time' : '配送时间'}
-                        </h3>
-                        <div className="space-y-3 text-sm">
-                          <div>
-                            <p className="text-gray-600 dark:text-gray-400 text-xs uppercase tracking-wide mb-1">
-                              {lang === 'en' ? 'Date' : '日期'}
-                            </p>
-                            <p className="font-semibold text-black dark:text-white">
-                              {order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString() : 'N/A'}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-gray-600 dark:text-gray-400 text-xs uppercase tracking-wide mb-1">
-                              {lang === 'en' ? 'Time' : '时间'}
-                            </p>
-                            <p className="font-semibold text-black dark:text-white">
-                              {order.deliveryTime || 'N/A'}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Items */}
-                    <div className="border-t border-gray-200 dark:border-white/10 pt-6 mt-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-bold text-black dark:text-white">
-                          {lang === 'en' ? 'Items' : '商品'}
-                        </h3>
-                        <span className="text-lg font-bold text-amber-600">
-                          Total: Rs {order.total}
-                        </span>
-                      </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-200 dark:border-white/10 pt-4">
                       <div className="space-y-2">
-                        {order.items?.map((item: any, itemIdx: number) => (
-                          <div key={itemIdx} className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
-                            <span>{item.name} x{item.quantity || 1}</span>
-                            <span>Rs {(parseFloat(item.price) * (item.quantity || 1)).toFixed(2)}</span>
-                          </div>
-                        ))}
+                        <h4 className="font-bold text-sm uppercase text-gray-500">Delivery to:</h4>
+                        <p className="flex items-center gap-2 text-black dark:text-white font-medium">
+                          <User size={14} className="text-amber-600" /> {order.name}
+                        </p>
+                        <p className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                          <MapPin size={14} /> {order.address}
+                        </p>
+                        <p className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                          <Phone size={14} /> {order.phone}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                         <h4 className="font-bold text-sm uppercase text-gray-500 mb-2 text-left md:text-right">Summary:</h4>
+                         <p className="text-2xl font-bold text-amber-600">Rs {order.total}</p>
+                         <p className="text-xs text-gray-500">{order.items.length} Items ordered</p>
                       </div>
                     </div>
                   </Card>
                 ))
               )}
             </div>
-          )}
-
-          {/* Place Order Tab */}
-          {activeTab === 'new' && showOrderForm && (
-            <Card className="p-8 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-2xl">
-              <h2 className="text-2xl font-bold text-black dark:text-white mb-6">
-                {lang === 'en' ? 'New Order' : '新订单'}
-              </h2>
-
-              <form onSubmit={handleAddOrder} className="space-y-6">
-                {/* Order Items from Menu */}
-                <div>
-                  <label className="block text-sm font-semibold text-black dark:text-white mb-2">
-                    {lang === 'en' ? 'Select Items from Menu' : '从菜单选择商品'}
-                  </label>
-                  <Button
-                    type="button"
-                    onClick={() => router.push('/menu')}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
-                  >
-                    {lang === 'en' ? 'Go to Menu' : '去菜单'}
-                  </Button>
-                  {cartItems.length > 0 && (
-                    <div className="mt-4 space-y-3">
-                      <p className="font-semibold text-black dark:text-white">
-                        {lang === 'en' ? 'Selected Items' : '选定的商品'}:
-                      </p>
-                      {cartItems.map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="flex justify-between items-center p-3 bg-white dark:bg-black rounded-lg border border-gray-200 dark:border-white/10"
-                        >
-                          <span>{item.name} x{item.quantity || 1}</span>
-                          <button
-                            type="button"
-                            onClick={() => removeFromCart(idx)}
-                            className="text-red-600 hover:text-red-700 font-bold"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      ))}
-                      <div className="text-lg font-bold text-amber-600">
-                        Total: Rs {getTotalPrice()}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Delivery Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-black dark:text-white mb-2">
-                      {lang === 'en' ? 'Name' : '姓名'}
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-black dark:text-white mb-2">
-                      {lang === 'en' ? 'Phone' : '电话'}
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-black dark:text-white mb-2">
-                    {lang === 'en' ? 'Delivery Address' : '配送地址'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-black dark:text-white mb-2">
-                      {lang === 'en' ? 'Delivery Date' : '配送日期'}
-                    </label>
-                    <input
-                      type="date"
-                      required
-                      value={formData.deliveryDate}
-                      onChange={(e) => setFormData({ ...formData, deliveryDate: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-black dark:text-white mb-2">
-                      {lang === 'en' ? 'Delivery Time' : '配送时间'}
-                    </label>
-                    <input
-                      type="time"
-                      required
-                      value={formData.deliveryTime}
-                      onChange={(e) => setFormData({ ...formData, deliveryTime: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-black dark:text-white mb-2">
-                    {lang === 'en' ? 'Special Notes' : '特殊说明'}
-                  </label>
-                  <textarea
-                    value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    rows={3}
-                    className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={submitting || cartItems.length === 0}
-                  className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3"
-                >
-                  {submitting ? 'Placing Order...' : 'Place Order'}
-                </Button>
-              </form>
-            </Card>
-          )}
+          )} */}
         </div>
       </div>
 
