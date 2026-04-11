@@ -27,7 +27,7 @@ export function Menu() {
       name: item.name,
       price: item.price,
       category: item.category,
-      image: item.image || '/Mottonkarahi.jpeg',
+      image: item.image || '/chapli-kabab.png',
     })
   }
 
@@ -45,11 +45,10 @@ export function Menu() {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category.toUpperCase())}
-                  className={`text-xs md:text-sm font-bold transition-colors uppercase tracking-widest whitespace-nowrap py-2 ${
-                    activeCategory === category.toUpperCase()
-                      ? 'text-amber-600'
-                      : 'text-gray-400 hover:text-black dark:hover:text-white'
-                  }`}
+                  className={`text-xs md:text-sm font-bold transition-colors uppercase tracking-widest whitespace-nowrap py-2 ${activeCategory === category.toUpperCase()
+                    ? 'text-amber-600'
+                    : 'text-gray-400 hover:text-black dark:hover:text-white'
+                    }`}
                 >
                   {category}
                   {activeCategory === category.toUpperCase() && (
@@ -69,7 +68,7 @@ export function Menu() {
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-200 dark:bg-gray-900">
                 <Image
-                  src={item.image || '/Mottonkarahi.jpeg'}
+                  src={item.image || '/chapli-kabab.png'}
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"

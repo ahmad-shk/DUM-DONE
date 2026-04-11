@@ -44,10 +44,10 @@ export default function MenuPage() {
           {/* Page Title */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-2">
-              {lang === 'en' ? 'Our Menu' : '我们的菜单'}
+              {lang === 'en' ? 'Our Menu' : 'ہمارا مینو'}
             </h1>
             <p className="text-muted-foreground">
-              {lang === 'en' ? 'Discover authentic Chinese dishes' : '发现正宗的中式菜肴'}
+              {lang === 'en' ? 'Discover authentic desi flavors' : 'اصلی دیسی ذائقے دریافت کریں'}
             </p>
           </div>
 

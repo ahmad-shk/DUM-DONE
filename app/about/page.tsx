@@ -9,10 +9,10 @@ import { translations } from '@/lib/translations'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { 
-  UtensilsCrossed, 
-  Leaf, 
-  Truck, 
+import {
+  UtensilsCrossed,
+  Leaf,
+  Truck,
   Heart,
   MapPin,
   Phone,
@@ -26,7 +26,7 @@ export default function AboutPage() {
   const { lang } = useLanguage()
   const t = translations[lang].aboutPage
   const contact = translations[lang].contact
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -40,14 +40,14 @@ export default function AboutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1500))
-    
+
     setIsSubmitting(false)
     setIsSubmitted(true)
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
-    
+
     // Reset success message after 5 seconds
     setTimeout(() => setIsSubmitted(false), 5000)
   }
@@ -57,7 +57,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-black transition-colors duration-500">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="pt-28 md:pt-36 pb-16 md:pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-amber-50/50 to-transparent dark:from-amber-900/10 dark:to-transparent" />
@@ -70,29 +70,29 @@ export default function AboutPage() {
               {t.subtitle}
             </p>
           </div>
-          
+
           {/* Hero Images Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl">
-              <Image 
-                src="/image-1.png" 
-                alt="Restaurant Food"
+              <Image
+                src="/biryani.png"
+                alt="Signature Biryani"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl md:mt-12">
-              <Image 
-                src="/image-2.png" 
-                alt="Restaurant Interior"
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl md:mt-12 border-4 border-white/10">
+              <Image
+                src="/palak_paneer.png"
+                alt="Fresh Palak Paneer"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-500"
               />
             </div>
             <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl">
-              <Image 
-                src="/miso-soup-with-seafood.png" 
-                alt="Signature Dish"
+              <Image
+                src="/chapli-kabab.png"
+                alt="Authentic Kabab"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-500"
               />
@@ -124,7 +124,7 @@ export default function AboutPage() {
                 {t.storyText}
               </p>
             </div>
-            
+
             {/* Our Mission */}
             <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100 dark:border-zinc-800">
               <h2 className="text-2xl md:text-3xl font-bold text-black dark:text-white font-serif mb-4">
@@ -145,12 +145,12 @@ export default function AboutPage() {
           <h2 className="text-3xl md:text-4xl font-bold text-center text-black dark:text-white font-serif mb-12">
             {t.whyChooseUs}
           </h2>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {t.features.map((feature, index) => {
               const Icon = featureIcons[index]
               return (
-                <div 
+                <div
                   key={index}
                   className="bg-white dark:bg-zinc-900 rounded-2xl p-6 text-center shadow-md border border-gray-100 dark:border-zinc-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
@@ -183,7 +183,7 @@ export default function AboutPage() {
                 <h3 className="text-lg font-bold text-white mb-2">{contact.hours}</h3>
                 <p className="text-gray-400 text-sm whitespace-pre-line">{contact.hoursText}</p>
               </div>
-              
+
               {/* Address */}
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center mb-4">
@@ -192,7 +192,7 @@ export default function AboutPage() {
                 <h3 className="text-lg font-bold text-white mb-2">{contact.address}</h3>
                 <p className="text-gray-400 text-sm whitespace-pre-line">{contact.addressText}</p>
               </div>
-              
+
               {/* Phone */}
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center mb-4">
@@ -203,7 +203,7 @@ export default function AboutPage() {
                   {contact.phone}
                 </a>
               </div>
-              
+
               {/* Email */}
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center mb-4">
@@ -230,7 +230,7 @@ export default function AboutPage() {
               {t.contactForm.subtitle}
             </p>
           </div>
-          
+
           <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 md:p-10 shadow-xl border border-gray-100 dark:border-zinc-800">
             {isSubmitted ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -271,7 +271,7 @@ export default function AboutPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -299,7 +299,7 @@ export default function AboutPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     {t.contactForm.message}
@@ -313,7 +313,7 @@ export default function AboutPage() {
                     placeholder={t.contactForm.message}
                   />
                 </div>
-                
+
                 <Button
                   type="submit"
                   disabled={isSubmitting}

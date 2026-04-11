@@ -44,11 +44,25 @@ export function WhatsAppContact() {
         />
       )}
 
-      {/* WhatsApp Contact Button - Fixed position */}
-      <div className="fixed bottom-6 right-6 z-[999] flex items-center">
-        {/* Popup Menu - appears on LEFT side of button */}
+      {/* WhatsApp Contact Button - Fixed position Bottom Left */}
+      <div className="fixed bottom-24 md:bottom-6 left-6 z-[999] flex items-center transition-all duration-300">
+        
+        {/* Main WhatsApp Button */}
+        <button
+          onClick={() => setShowMenu(!showMenu)}
+          className="relative bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-10"
+          aria-label="Contact us on WhatsApp"
+        >
+          {showMenu ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <MessageCircle className="w-6 h-6" />
+          )}
+        </button>
+
+        {/* Popup Menu - appears on RIGHT side of button */}
         {showMenu && (
-          <div className="absolute right-full bottom-0 mr-3 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 p-3 space-y-2 animate-in fade-in slide-in-from-right-2 duration-200 z-[1002]">
+          <div className="absolute left-full bottom-0 ml-3 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 p-3 space-y-2 animate-in fade-in slide-in-from-left-2 duration-200 z-[1002]">
             {contacts.map((contact) => (
               <button
                 key={contact.phone}
@@ -62,18 +76,6 @@ export function WhatsAppContact() {
           </div>
         )}
 
-        {/* Main WhatsApp Button */}
-        <button
-          onClick={() => setShowMenu(!showMenu)}
-          className="relative bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95"
-          aria-label="Contact us on WhatsApp"
-        >
-          {showMenu ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <MessageCircle className="w-6 h-6" />
-          )}
-        </button>
       </div>
     </>
   )

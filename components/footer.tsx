@@ -19,8 +19,8 @@ export function Footer() {
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
               {lang === 'en'
-                ? 'Authentic Chinese cuisine delivered to your door with fresh ingredients and traditional recipes.'
-                : 'مستند چینی کھانا آپ کے دروازے پر پہنچایا گیا۔ تازہ اجزاء، روایتی ترکیبیں۔'}
+                ? 'Authentic Pakistani cuisine delivered to your door with fresh ingredients, desi flavors, and traditional recipes.'
+                : 'مستند پاکستانی کھانا آپ کے دروازے پر پہنچایا گیا۔ تازہ اجزاء، اور اصلی دیسی ذائقے۔'}
             </p>
           </div>
 

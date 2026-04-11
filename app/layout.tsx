@@ -7,6 +7,7 @@ import { FirebaseAuthProvider } from "@/lib/firebase-context"
 import { CartProvider } from "@/lib/cart-context"
 import { CartButton } from "@/components/cart-button"
 import { WhatsAppContact } from "@/components/whatsapp-contact"
+import { MobileNav } from "@/components/mobile-nav"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -25,13 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
+      <body className={`font-sans antialiased pb-24 md:pb-0`} suppressHydrationWarning>
         <FirebaseAuthProvider>
           <LanguageProvider>
             <CartProvider>
               {children}
               <CartButton />
               <WhatsAppContact />
+              <MobileNav />
             </CartProvider>
           </LanguageProvider>
         </FirebaseAuthProvider>
