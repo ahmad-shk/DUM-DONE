@@ -179,7 +179,6 @@ export default function OrderPage() {
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
               }`}
             >
-              {/* {lang === 'en' ? 'Recent Orders' : '近期订单'} ({orders.length}) */}
             </button>
           </div>
 
@@ -337,67 +336,6 @@ export default function OrderPage() {
               </div>
             </div>
           )}
-
-          {/* Order History Tab */}
-          {/* {activeTab === 'history' && (
-            <div className="space-y-6">
-              {orders.length === 0 ? (
-                <Card className="p-12 text-center bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10">
-                  <Truck className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
-                    {lang === 'en' ? 'No recent orders found.' : '未发现近期订单。'}
-                  </p>
-                  <Button
-                    onClick={() => setActiveTab('new')}
-                    className="bg-amber-600 hover:bg-amber-700 text-white"
-                  >
-                    {lang === 'en' ? 'Start Ordering' : '开始订购'}
-                  </Button>
-                </Card>
-              ) : (
-                orders.map((order, idx) => (
-                  <Card
-                    key={idx}
-                    className="p-6 bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-2xl"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <p className="text-gray-600 dark:text-gray-400 text-xs">
-                          Order ID: #{order.id.toUpperCase()}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {new Date(order.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-full text-xs font-bold uppercase">
-                        {order.status}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-200 dark:border-white/10 pt-4">
-                      <div className="space-y-2">
-                        <h4 className="font-bold text-sm uppercase text-gray-500">Delivery to:</h4>
-                        <p className="flex items-center gap-2 text-black dark:text-white font-medium">
-                          <User size={14} className="text-amber-600" /> {order.name}
-                        </p>
-                        <p className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
-                          <MapPin size={14} /> {order.address}
-                        </p>
-                        <p className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
-                          <Phone size={14} /> {order.phone}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                         <h4 className="font-bold text-sm uppercase text-gray-500 mb-2 text-left md:text-right">Summary:</h4>
-                         <p className="text-2xl font-bold text-amber-600">Rs {order.total}</p>
-                         <p className="text-xs text-gray-500">{order.items.length} Items ordered</p>
-                      </div>
-                    </div>
-                  </Card>
-                ))
-              )}
-            </div>
-          )} */}
         </div>
       </div>
 
