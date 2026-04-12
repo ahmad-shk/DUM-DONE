@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addItem } from '@/lib/redux/slices/cartSlice'
+import { useDispatch } from 'react-redux' 
+import { addItem } from '@/lib/redux/slices/cartSlice' 
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Card } from '@/components/ui/card'
@@ -33,16 +33,14 @@ export default function MenuPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const filteredItems =
-    activeCategory === 'VIEW FULL MENU' || activeCategory === 'مکمل مینو دیکھیں'
+    activeCategory === 'VIEW FULL MENU'
       ? t.items
-      : t.items.filter((item: any) =>
-        item.category.trim().toUpperCase() === activeCategory.trim().toUpperCase()
-      )
+      : t.items.filter((item: any) => item.category.toUpperCase() === activeCategory.toUpperCase())
 
   // FIX 1: TypeScript Error "quantity does not exist"
   const handleAddToCart = (item: any, quantity: number = 1) => {
     const itemId = `menu-${item.name.toLowerCase().replace(/\s+/g, '-')}`
-
+    
     // Agar aapka slice quantity expect nahi kar raha, toh loop ke zariye dispatch karein
     for (let i = 0; i < quantity; i++) {
       dispatch(addItem({
@@ -85,10 +83,11 @@ export default function MenuPage() {
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat.toUpperCase())}
-                    className={`flex items-center gap-1 px-2.5 py-1.5 md:px-3 md:py-2 rounded-full text-[10px] md:text-xs font-semibold whitespace-nowrap transition-all duration-300 ${isActive
+                    className={`flex items-center gap-1 px-2.5 py-1.5 md:px-3 md:py-2 rounded-full text-[10px] md:text-xs font-semibold whitespace-nowrap transition-all duration-300 ${
+                      isActive
                         ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25'
                         : 'bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-700'
-                      }`}
+                    }`}
                   >
                     <span className="text-sm md:text-base">{icon}</span>
                     <span>{cat}</span>
@@ -102,8 +101,8 @@ export default function MenuPage() {
             {filteredItems.map((item: any) => {
               const itemId = `menu-${item.name.toLowerCase().replace(/\s+/g, '-')}`
               return (
-                <Card
-                  key={itemId}
+                <Card 
+                  key={itemId} 
                   className="group h-full bg-gray-50 dark:bg-zinc-900 border-none rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col cursor-pointer"
                   onClick={() => handleItemClick(item)}
                 >

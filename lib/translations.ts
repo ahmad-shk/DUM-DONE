@@ -51,10 +51,11 @@ export const translations = {
           { "name": "Chapli Kabab.png", "price": "RS 300", "category": "Kabab", "image": "/chapli-kabab.png" },
           { "name": "Chicken Kabab", "price": "RS 250", "category": "Kabab", "image": "/image-2.png" },
           { "name": "Beef Kabab", "price": "RS 280", "category": "Kabab", "image": "/chapli-kabab.png" },
-          { "name": "Pure Desi Ghee (500ml)", "price": "RS 1200", "category": "Desi Ghee", "image": "/pureDesiGhee.png" },
-          { "name": "Cow Ghee (500ml)", "price": "RS 1400", "category": "Desi Ghee", "image": "/cowGhee.png" },
-          { "name": "Buffalo Ghee (500ml)", "price": "RS 1100", "category": "Desi Ghee", "image": "/buffaloGhee.png" },
-          { "name": "Gulab Jamun (2 pcs)", "price": "RS 150", "category": "Sweets", "image": "/gulabJamun.png" }
+          { "name": "Pure Desi Ghee (500ml)", "price": "RS 1200", "category": "Desi Ghee", "image": "/image-2.png" },
+          { "name": "Cow Ghee (500ml)", "price": "RS 1400", "category": "Desi Ghee", "image": "/image-2.png" },
+          { "name": "Buffalo Ghee (500ml)", "price": "RS 1100", "category": "Desi Ghee", "image": "/image-2.png" },
+          { "name": "Ghee with Dry Fruits (250ml)", "price": "RS 800", "category": "Desi Ghee", "image": "/image-2.png" },
+          { "name": "Gulab Jamun (2 pcs)", "price": "RS 150", "category": "Sweets", "image": "/chapli-kabab.png" }
         ],
     },
     about: {
@@ -178,9 +179,10 @@ export const translations = {
           { "name": "چپلی کباب", "price": "RS 300", "category": "کباب", "image": "/chapli-kabab.png" },
           { "name": "چکن کباب", "price": "RS 250", "category": "کباب", "image": "/image-2.png" },
           { "name": "بیف کباب", "price": "RS 280", "category": "کباب", "image": "/chapli-kabab.png" },
-          { "name": "خالص دیسی گھی (500ml)", "price": "RS 1200", "category": "دیسی گھی", "image": "/pureDesiGhee.png" },
-          { "name": "گائے کی گھی (500ml)", "price": "RS 1400", "category": "دیسی گھی", "image": "/buffaloGhee.png" },
-          { "name": "بھینس کی گھی (500ml)", "price": "RS 1100", "category": "دیسی گھی", "image": "/cowGhee.png" },
+          { "name": "خالص دیسی گھی (500ml)", "price": "RS 1200", "category": "دیسی گھی", "image": "/image-2.png" },
+          { "name": "گائے کی گھی (500ml)", "price": "RS 1400", "category": "دیسی گھی", "image": "/image-2.png" },
+          { "name": "بھینس کی گھی (500ml)", "price": "RS 1100", "category": "دیسی گھی", "image": "/image-2.png" },
+          { "name": "خشک میوے والی گھی (250ml)", "price": "RS 800", "category": "دیسی گھی", "image": "/image-2.png" },
           { "name": "گلاب جامن", "price": "RS 150", "category": "میٹھے", "image": "/chapli-kabab.png" }
         ],
     },
