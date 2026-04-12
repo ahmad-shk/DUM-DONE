@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useLanguage } from "@/lib/language-context"
+import { useLanguage } from "@/lib/use-language"
 import { translations } from "@/lib/translations"
 import { CheckCircle2 } from "lucide-react"
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Sun, Moon, Globe, ShoppingBag, MenuIcon, X } from 'lucide-react'
-import { useLanguage } from '@/lib/language-context'
+import { useLanguage } from '@/lib/use-language'
 import { translations } from '@/lib/translations'
 import Image from 'next/image'
 

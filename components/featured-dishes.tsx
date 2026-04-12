@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { useLanguage } from '@/lib/language-context'
+import { useLanguage } from '@/lib/use-language'
 import { translations } from '@/lib/translations'
-import { useCart } from '@/lib/cart-context'
+import { useDispatch } from 'react-redux'
+import { addItem } from '@/lib/redux/slices/cartSlice'
 import { useRouter } from 'next/navigation'
 import { Plus, Star, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -14,7 +15,7 @@ import { ItemDetailModal } from '@/components/item-detail-modal'
 export function FeaturedDishes() {
   const { lang } = useLanguage()
   const t = translations[lang].featured
-  const { addItem } = useCart()
+  const dispatch = useDispatch()
   const router = useRouter()
   const [activeCat, setActiveCat] = useState("All")
   const [selectedItem, setSelectedItem] = useState<any>(null)
@@ -152,15 +153,15 @@ export function FeaturedDishes() {
   const handleAddToCart = (item: any, quantity: number = 1) => {
     const itemId = `feature-${item.name.toLowerCase().replace(/\s+/g, '-')}`
     for (let i = 0; i < quantity; i++) {
-      addItem({
+      dispatch(addItem({
         id: itemId,
         name: item.name,
         price: item.price,
         category: 'Signature',
         image: item.image || '/mask-group.jpg',
         description: item.description,
-      })
-    }aspect-[4/3]
+      }))
+    }
   }
 
   const handleImageClick = (item: any) => {

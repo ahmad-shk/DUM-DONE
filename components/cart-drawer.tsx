@@ -1,7 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useCart } from '@/lib/cart-context'
+import { useSelector, useDispatch } from 'react-redux' // 1. Hooks import karein
+import { removeItem, updateQuantity } from '@/lib/redux/slices/cartSlice' // 2. Redux Actions import karein
 import { X, Minus, Plus, ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
@@ -13,12 +14,16 @@ interface CartDrawerProps {
 
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const router = useRouter()
-  const { items: cartItems, removeItem, updateQuantity } = useCart()
+  const dispatch = useDispatch() // 3. Dispatch initialize karein
+
+  // 4. Redux se items nikaalein
+  const cartItems = useSelector((state: any) => state.cart.items)
 
   const getTotalPrice = () => {
     return cartItems
-      .reduce((total, item) => {
-        const price = parseFloat(item.price.replace(/[^0-9.]/g, '') || '0')
+      .reduce((total: number, item: any) => {
+        // Price string se number extract karein (e.g., "RS 500" -> 500)
+        const price = parseFloat(String(item.price).replace(/[^0-9.]/g, '') || '0')
         return total + price * item.quantity
       }, 0)
       .toFixed(2)
@@ -73,7 +78,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <p>Your cart is empty</p>
             </div>
           ) : (
-            cartItems.map((item) => (
+            cartItems.map((item: any) => (
               <div
                 key={item.id}
                 className="flex gap-4 p-4 bg-gray-100 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800"
@@ -81,7 +86,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 {/* Item Image */}
                 <div className="relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800">
                   <Image
-                    src={item.image}
+                    src={item.image || '/chapli-kabab.png'}
                     alt={item.name}
                     fill
                     className="object-cover"
@@ -103,7 +108,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   {/* Quantity Controls */}
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() => dispatch(updateQuantity({ id: item.id, quantity: Math.max(0, item.quantity - 1) }))}
                       className="p-1 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors"
                     >
                       <Minus className="w-4 h-4" />
@@ -112,13 +117,13 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }))}
                       className="p-1 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => dispatch(removeItem(item.id))}
                       className="ml-auto p-1 text-gray-500 hover:text-red-600 transition-colors"
                     >
                       <X className="w-4 h-4" />

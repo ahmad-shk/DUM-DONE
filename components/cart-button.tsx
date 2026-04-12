@@ -1,34 +1,39 @@
 'use client'
-
-import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { ShoppingCart } from 'lucide-react'
-import { useCart } from '@/lib/cart-context'
+import { useState } from 'react'
 import { CartDrawer } from '@/components/cart-drawer'
 
 export function CartButton() {
-  const { totalItems } = useCart()
+  // Redux state se items nikaalna
+  const cartItems = useSelector((state: any) => state.cart.items)
+  
+  // Calculate total quantity
+  const totalItems = cartItems.reduce((acc: number, item: any) => acc + (item.quantity || 0), 0)
+  
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleOpenCart = () => {
-    // Dispatch custom event to close any open item modals
-    window.dispatchEvent(new CustomEvent('closeItemModal'))
-    setIsOpen(true)
-  }
+  // DEBUGGING: Console mein check karein ke items aa rahe hain ya nahi
+  // console.log("Cart Items in Redux:", cartItems)
 
-  if (totalItems === 0) {
-    return null
-  }
+  // Agar aap chahte hain ke button tabhi nazar aaye jab items hon:
+  if (totalItems === 0) return null
 
   return (
     <>
-      <button
-        onClick={handleOpenCart}
-        className="fixed bottom-24 md:bottom-6 right-4 md:right-6 bg-amber-600 hover:bg-amber-700 text-white p-3 md:p-4 rounded-full shadow-2xl hover:shadow-xl transition-all duration-300 flex items-center gap-2 z-[10001] hover:scale-110 active:scale-95 animate-in zoom-in-50 fade-in duration-300"
-        aria-label={`View cart with ${totalItems} items`}
+      <button 
+        onClick={() => setIsOpen(true)} 
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white px-5 py-3.5 rounded-full shadow-2xl hover:shadow-amber-600/50 hover:from-amber-700 hover:to-amber-600 active:scale-95 transition-all duration-200 font-semibold text-sm md:text-base border border-amber-500/30"
       >
-        <ShoppingCart className="w-5 md:w-6 h-5 md:h-6" />
-        <span className="font-bold text-sm md:text-lg min-w-[20px] text-center">{totalItems}</span>
+        <div className="relative">
+          <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+          <span className="absolute -top-2.5 -right-2.5 bg-red-500 text-white text-[11px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-amber-600 shadow-lg">
+            {totalItems}
+          </span>
+        </div>
+        <span>View Cart</span>
       </button>
+
       <CartDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   )

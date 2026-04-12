@@ -2,9 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { LanguageProvider } from "@/lib/language-context"
-import { FirebaseAuthProvider } from "@/lib/firebase-context"
-import { CartProvider } from "@/lib/cart-context"
 import { ReduxProvider } from "@/lib/redux/provider"
 import { CartButton } from "@/components/cart-button"
 import { WhatsAppContact } from "@/components/whatsapp-contact"
@@ -29,16 +26,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased pb-24 md:pb-0 overflow-x-hidden`} suppressHydrationWarning>
         <ReduxProvider>
-          <FirebaseAuthProvider>
-            <LanguageProvider>
-              <CartProvider>
-                {children}
-                <CartButton />
-                <WhatsAppContact />
-                <MobileNav />
-              </CartProvider>
-            </LanguageProvider>
-          </FirebaseAuthProvider>
+          {children}
+          <CartButton />
+          <WhatsAppContact />
+          <MobileNav />
         </ReduxProvider>
         <Analytics />
       </body>

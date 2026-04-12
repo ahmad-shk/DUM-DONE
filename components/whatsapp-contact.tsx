@@ -7,12 +7,6 @@ import { MessageCircle, X } from 'lucide-react'
 export function WhatsAppContact() {
   const [showMenu, setShowMenu] = useState(false)
   const pathname = usePathname()
-
-  // Hide on menu page
-  if (pathname === '/menu') {
-    return null
-  }
-
   const contacts = [
     {
       name: 'Customer Support',

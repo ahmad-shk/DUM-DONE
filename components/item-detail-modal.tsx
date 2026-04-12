@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Plus, Minus, ShoppingCart } from 'lucide-react'
+import { X, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 
 interface MenuItem {
@@ -27,12 +27,10 @@ export function ItemDetailModal({
   onClose,
   onAddToCart,
 }: ItemDetailModalProps) {
-  const [quantity, setQuantity] = useState(1)
-
   // Reset quantity when modal opens with new item
   useEffect(() => {
     if (isOpen) {
-      setQuantity(1)
+      // Reset logic if needed
     }
   }, [isOpen, item])
 
@@ -63,15 +61,8 @@ export function ItemDetailModal({
 
   const handleAddToCart = () => {
     if (item) {
-      onAddToCart(item, quantity)
-      setQuantity(1)
+      onAddToCart(item, 1)
       onClose()
-    }
-  }
-
-  const handleQuantityChange = (value: number) => {
-    if (value > 0 && value <= 99) {
-      setQuantity(value)
     }
   }
 
@@ -80,8 +71,6 @@ export function ItemDetailModal({
   const price = typeof item.price === 'string' 
     ? parseFloat(item.price.replace(/[^0-9.-]+/g, '')) 
     : item.price
-
-  const totalPrice = Math.round(price * quantity)
 
   return (
     <>
@@ -149,40 +138,14 @@ export function ItemDetailModal({
               </p>
             )}
 
-            {/* Quantity and Add to Cart */}
-            <div className="flex items-center gap-3">
-              {/* Quantity Selector - Compact */}
-              <div className="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-lg">
-                <button
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  disabled={quantity <= 1}
-                  className="w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 disabled:opacity-30 transition-colors"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="w-3.5 h-3.5" />
-                </button>
-                <span className="w-6 text-center text-sm font-bold text-zinc-900 dark:text-white">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                  disabled={quantity >= 99}
-                  className="w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 disabled:opacity-30 transition-colors"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              {/* Add to Cart Button */}
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 h-9 bg-amber-600 hover:bg-amber-700 active:scale-[0.98] text-white text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-1.5"
-              >
-                <ShoppingCart className="w-3.5 h-3.5" />
-                <span>Add Rs. {totalPrice}</span>
-              </button>
-            </div>
+            {/* Add to Cart Button */}
+            <button
+              onClick={handleAddToCart}
+              className="w-full h-10 bg-amber-600 hover:bg-amber-700 active:scale-[0.98] text-white text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              <span>Add Rs. {price}</span>
+            </button>
           </div>
         </div>
       </div>

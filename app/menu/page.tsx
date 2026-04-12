@@ -1,17 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import { useDispatch } from 'react-redux' 
+import { addItem } from '@/lib/redux/slices/cartSlice' 
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Card } from '@/components/ui/card'
-import { useLanguage } from '@/lib/language-context'
+import { useLanguage } from '@/lib/use-language'
 import { translations } from '@/lib/translations'
 import { Star, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
-import { useCart } from '@/lib/cart-context'
 import { ItemDetailModal } from '@/components/item-detail-modal'
 
-// Category icons
 const categoryIcons: { [key: string]: string } = {
   'VIEW FULL MENU': '🍱',
   'ALL': '🍱',
@@ -25,29 +25,32 @@ const categoryIcons: { [key: string]: string } = {
 }
 
 export default function MenuPage() {
+  const dispatch = useDispatch()
   const { lang } = useLanguage()
   const t = translations[lang].menu
   const [activeCategory, setActiveCategory] = useState('VIEW FULL MENU')
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { addItem } = useCart()
 
   const filteredItems =
     activeCategory === 'VIEW FULL MENU'
       ? t.items
       : t.items.filter((item: any) => item.category.toUpperCase() === activeCategory.toUpperCase())
 
+  // FIX 1: TypeScript Error "quantity does not exist"
   const handleAddToCart = (item: any, quantity: number = 1) => {
     const itemId = `menu-${item.name.toLowerCase().replace(/\s+/g, '-')}`
+    
+    // Agar aapka slice quantity expect nahi kar raha, toh loop ke zariye dispatch karein
     for (let i = 0; i < quantity; i++) {
-      addItem({
+      dispatch(addItem({
         id: itemId,
         name: item.name,
         price: item.price,
         category: item.category,
         image: item.image || '/chapli-kabab.png',
         description: item.description,
-      })
+      }))
     }
   }
 
@@ -62,7 +65,6 @@ export default function MenuPage() {
 
       <div className="pt-24 pb-28 md:pb-20">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Page Title */}
           <div className="text-center mb-6">
             <h1 className="text-2xl md:text-4xl font-bold text-black dark:text-white mb-1">
               {lang === 'en' ? 'Our Menu' : 'ہمارا مینو'}
@@ -72,7 +74,6 @@ export default function MenuPage() {
             </p>
           </div>
 
-          {/* Category Pills */}
           <div className="w-full overflow-x-auto no-scrollbar mb-6">
             <div className="flex gap-2 justify-start md:justify-center pb-2 px-1">
               {t.categories.map((cat: string) => {
@@ -96,7 +97,6 @@ export default function MenuPage() {
             </div>
           </div>
 
-          {/* Menu Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
             {filteredItems.map((item: any) => {
               const itemId = `menu-${item.name.toLowerCase().replace(/\s+/g, '-')}`
@@ -117,7 +117,8 @@ export default function MenuPage() {
                     />
                   </div>
 
-                  <div className="p-2.5 md:p-3 flex flex-col flex-grow gap-1 md:gap-2">
+                  {/* FIX 2: Tailwind flex-grow to grow */}
+                  <div className="p-2.5 md:p-3 flex flex-col grow gap-1 md:gap-2">
                     <h3 className="text-xs md:text-sm font-bold text-black dark:text-white leading-tight line-clamp-1">
                       {item.name}
                     </h3>
@@ -151,7 +152,6 @@ export default function MenuPage() {
         </div>
       </div>
 
-      {/* Item Detail Modal */}
       <ItemDetailModal
         item={selectedItem}
         isOpen={isModalOpen}

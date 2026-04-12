@@ -4,24 +4,26 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { useLanguage } from '@/lib/language-context'
+import { useLanguage } from '@/lib/use-language'
 import { translations } from '@/lib/translations'
 import { Star, ShoppingCart } from 'lucide-react'
-import { useCart } from '@/lib/cart-context'
+import { useDispatch } from 'react-redux'
+import { addItem } from '@/lib/redux/slices/cartSlice'
 import { ItemDetailModal } from '@/components/item-detail-modal'
 
 // Category icons mapping
-const categoryIcons: { [key: string]: string } = {
-  'VIEW FULL MENU': '🍱',
-  'ALL': '🍱',
-  'RICE': '🍛',
-  'DAAL': '🍲',
-  'KABAB': '🍢',
-  'VEGETABLE': '🥗',
-  'TANDOOR': '🫓',
-  'SWEETS': '🍮',
-  'DRINKS': '🥤',
-}
+  const categoryIcons: { [key: string]: string } = {
+    'VIEW FULL MENU': '🍱',
+    'ALL': '🍱',
+    'RICE': '🍛',
+    'DAAL': '🍲',
+    'KABAB': '🍢',
+    'VEGETABLE': '🥗',
+    'TANDOOR': '🫓',
+    'DESI GHEE': '🫶',
+    'SWEETS': '🍮',
+    'DRINKS': '🥤',
+  }
 
 export function Menu() {
   const [activeCategory, setActiveCategory] = useState('VIEW FULL MENU')
@@ -29,7 +31,7 @@ export function Menu() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { lang } = useLanguage()
   const t = translations[lang].menu
-  const { addItem } = useCart()
+  const dispatch = useDispatch()
 
   const filteredItems =
     activeCategory === 'VIEW FULL MENU'
@@ -39,14 +41,14 @@ export function Menu() {
   const handleAddToCart = (item: any, quantity: number = 1) => {
     const itemId = `menu-${item.name.toLowerCase().replace(/\s+/g, '-')}`
     for (let i = 0; i < quantity; i++) {
-      addItem({
+      dispatch(addItem({
         id: itemId,
         name: item.name,
         price: item.price,
         category: item.category,
         image: item.image || '/chapli-kabab.png',
         description: item.description,
-      })
+      }))
     }
   }
 

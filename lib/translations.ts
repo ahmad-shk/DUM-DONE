@@ -34,7 +34,7 @@ export const translations = {
     },
     menu: {
       title: "Explore Our Menu",
-      categories: ["View Full Menu", "Tandoor", "Kabab", "Rice", "Vegetable", "Daal", "Sweets"],
+      categories: ["View Full Menu", "Tandoor", "Kabab", "Rice", "Vegetable", "Daal", "Desi Ghee", "Sweets"],
       viewFull: "View Full Menu",
       items:
         [
@@ -51,6 +51,10 @@ export const translations = {
           { "name": "Chapli Kabab.png", "price": "RS 300", "category": "Kabab", "image": "/chapli-kabab.png" },
           { "name": "Chicken Kabab", "price": "RS 250", "category": "Kabab", "image": "/image-2.png" },
           { "name": "Beef Kabab", "price": "RS 280", "category": "Kabab", "image": "/chapli-kabab.png" },
+          { "name": "Pure Desi Ghee (500ml)", "price": "RS 1200", "category": "Desi Ghee", "image": "/image-2.png" },
+          { "name": "Cow Ghee (500ml)", "price": "RS 1400", "category": "Desi Ghee", "image": "/image-2.png" },
+          { "name": "Buffalo Ghee (500ml)", "price": "RS 1100", "category": "Desi Ghee", "image": "/image-2.png" },
+          { "name": "Ghee with Dry Fruits (250ml)", "price": "RS 800", "category": "Desi Ghee", "image": "/image-2.png" },
           { "name": "Gulab Jamun (2 pcs)", "price": "RS 150", "category": "Sweets", "image": "/chapli-kabab.png" }
         ],
     },
@@ -158,7 +162,7 @@ export const translations = {
     },
     menu: {
       title: "ہمارا مینو دیکھیں",
-      categories: ["مکمل مینو دیکھیں", "تندور", "کباب", "چاول", "سبزی", "دال", "میٹھے"],
+      categories: ["مکمل مینو دیکھیں", "تندور", "کباب", "چاول", "سبزی", "دال", "دیسی گھی", "میٹھے"],
       viewFull: "مکمل مینو دیکھیں",
       items:
         [
@@ -175,6 +179,10 @@ export const translations = {
           { "name": "چپلی کباب", "price": "RS 300", "category": "کباب", "image": "/chapli-kabab.png" },
           { "name": "چکن کباب", "price": "RS 250", "category": "کباب", "image": "/image-2.png" },
           { "name": "بیف کباب", "price": "RS 280", "category": "کباب", "image": "/chapli-kabab.png" },
+          { "name": "خالص دیسی گھی (500ml)", "price": "RS 1200", "category": "دیسی گھی", "image": "/image-2.png" },
+          { "name": "گائے کی گھی (500ml)", "price": "RS 1400", "category": "دیسی گھی", "image": "/image-2.png" },
+          { "name": "بھینس کی گھی (500ml)", "price": "RS 1100", "category": "دیسی گھی", "image": "/image-2.png" },
+          { "name": "خشک میوے والی گھی (250ml)", "price": "RS 800", "category": "دیسی گھی", "image": "/image-2.png" },
           { "name": "گلاب جامن", "price": "RS 150", "category": "میٹھے", "image": "/chapli-kabab.png" }
         ],
     },
@@ -228,7 +236,7 @@ export const translations = {
       ourStory: "ہماری کہانی",
       storyText: "مستند کھانوں کے شوق کے ساتھ قائم، DUM & DONE پاکستانی کھانوں کے بھرپور ذائقے آپ کی میز پر لاتا ہے۔ ہمارے شیف صرف تازہ ترین اجزاء اور وقت کے ساتھ آزمودہ کھانا پکانے کی تکنیک استعمال کرتے ہیں۔",
       ourMission: "ہمارا مشن",
-      missionText: "بہترین سروس کے ساتھ لذیذ، مستند کھانا پیش کرنا۔ ہم معیار پر یقین رکھتے ہیں، اس بات کو یقینی بناتے ہوئے کہ ہمارے کچن سے نکلنے والی ہر ڈش اعلیٰ ترین معیار پر پوری اترے۔",
+      missionText: "ب��ترین سروس کے ساتھ لذیذ، مستند کھانا پیش کرنا۔ ہم معیار پر یقین رکھتے ہیں، اس بات کو یقینی بناتے ہوئے کہ ہمارے کچن سے نکلنے والی ہر ڈش اعلیٰ ترین معیار پر پوری اترے۔",
       whyChooseUs: "ہمیں کیوں چنیں",
       features: [
         { title: "تازہ اجزاء", desc: "ہم اپنے پکوانوں کے لیے صرف بہترین اور تازہ ترین اجزاء حاصل کرتے ہیں۔" },

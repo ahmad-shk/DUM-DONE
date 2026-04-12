@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useLanguage } from "@/lib/language-context"
+import { useLanguage } from "@/lib/use-language"
 import { translations } from "@/lib/translations"
 import { Calendar, Users, Clock, Phone, User, Send } from "lucide-react"
 
