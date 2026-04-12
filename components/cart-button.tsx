@@ -5,33 +5,30 @@ import { useState } from 'react'
 import { CartDrawer } from '@/components/cart-drawer'
 
 export function CartButton() {
-  // Redux state se items nikaalna
   const cartItems = useSelector((state: any) => state.cart.items)
-  
-  // Calculate total quantity
   const totalItems = cartItems.reduce((acc: number, item: any) => acc + (item.quantity || 0), 0)
-  
   const [isOpen, setIsOpen] = useState(false)
 
-  // DEBUGGING: Console mein check karein ke items aa rahe hain ya nahi
-  // console.log("Cart Items in Redux:", cartItems)
-
-  // Agar aap chahte hain ke button tabhi nazar aaye jab items hon:
   if (totalItems === 0) return null
 
   return (
     <>
       <button 
         onClick={() => setIsOpen(true)} 
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white px-5 py-3.5 rounded-full shadow-2xl hover:shadow-amber-600/50 hover:from-amber-700 hover:to-amber-600 active:scale-95 transition-all duration-200 font-semibold text-sm md:text-base border border-amber-500/30"
+        // bottom-28 se ye WhatsApp button ke upar ya barabar chala jayega
+        // Mobile par size chota (w-12 h-12) aur desktop par wapas normal
+        className="fixed bottom-28 right-6 z-50 flex items-center justify-center bg-gradient-to-r from-amber-600 to-amber-500 text-white w-12 h-12 md:w-auto md:h-auto md:px-5 md:py-3.5 rounded-full shadow-2xl active:scale-95 transition-all duration-200 border border-white/20"
       >
         <div className="relative">
           <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
-          <span className="absolute -top-2.5 -right-2.5 bg-red-500 text-white text-[11px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-amber-600 shadow-lg">
+          
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full border border-white">
             {totalItems}
           </span>
         </div>
-        <span>View Cart</span>
+        
+        {/* Mobile par text hidden rakha hai size chota rakhne ke liye */}
+        <span className="hidden md:block font-semibold text-sm ml-2">View Cart</span>
       </button>
 
       <CartDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
