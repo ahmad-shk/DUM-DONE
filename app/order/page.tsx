@@ -164,7 +164,7 @@ export default function OrderPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-500">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-6 md:py-10 pb-28 md:pb-10">
+      <main className="flex-1 container mx-auto pt-24 pb-28 md:pb-20 px-4 py-6 md:py-10 pb-28 md:pb-10">
         {/* Page Header */}
         <div className="text-center mb-6 md:mb-10">
           <h1 className="text-2xl md:text-4xl font-bold text-black dark:text-white mb-2">
