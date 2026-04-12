@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { clearCart } from '@/lib/redux/slices/cartSlice'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Header } from '@/components/header'
@@ -13,6 +14,7 @@ import { ArrowLeft } from 'lucide-react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
+import { useDispatch } from 'react-redux/es/hooks/useDispatch'
 
 interface CartItem {
   id: string
@@ -54,6 +56,7 @@ const validationSchema = Yup.object().shape({
 })
 
 export default function OrderPage() {
+  const dispatch = useDispatch()
   const router = useRouter()
   const { lang } = useLanguage()
   const [cartItems, setCartItems] = useState<CartItem[]>([])
@@ -128,18 +131,18 @@ export default function OrderPage() {
       )
 
       if (response.status === 200 || response.status === 201) {
-        // Save to local storage for history
-        const updatedOrders = [...orders, { ...orderPayload, id: Math.random().toString(36).substr(2, 9) }]
-        localStorage.setItem('guestOrders', JSON.stringify(updatedOrders))
+        
+        // ✅ 1. Redux Store Clear karein (Is se header mein value 0 ho jayegi)
+        dispatch(clearCart())
 
-        // Clear cart
-        sessionStorage.removeItem('cartItems')
+        // ✅ 2. Local Storage Saaf karein (Taake refresh pe items wapis na ayen)
+        localStorage.removeItem('cart')
+        
+        // ✅ 3. Local State Clear karein (Jo is page par list dikha rahi hai)
         setCartItems([])
 
-        // Show success message
         alert(lang === 'en' ? 'Order placed successfully!' : 'آرڈر کامیابی سے دیا گیا!')
 
-        // Redirect to menu
         setTimeout(() => {
           router.push('/menu')
         }, 1500)
