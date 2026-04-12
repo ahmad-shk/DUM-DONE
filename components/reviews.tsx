@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react"
-import { useLanguage } from "@/lib/use-language"
+import { useLanguage } from "@/lib/language-provider"
 import { translations } from "@/lib/translations"
 
 export function Reviews() {

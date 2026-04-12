@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Home, UtensilsCrossed, ShoppingBag, Info } from "lucide-react"
-import { useLanguage } from "@/lib/use-language"
+import { useLanguage } from "@/lib/language-provider"
 import { translations } from "@/lib/translations"
 import Image from "next/image"
 

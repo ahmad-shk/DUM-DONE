@@ -1,6 +1,6 @@
 "use client"
 
-import { useLanguage } from "@/lib/use-language"
+import { useLanguage } from "@/lib/language-provider"
 import { translations } from "@/lib/translations"
 
 export function Contact() {

@@ -3,7 +3,7 @@
 import { useEffect, useCallback } from "react"
 import useEmblaCarousel from "embla-carousel-react"
 import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/lib/use-language"
+import { useLanguage } from "@/lib/language-provider"
 import { getTranslation } from "@/lib/translations"
 import Image from "next/image"
 import Link from "next/link"

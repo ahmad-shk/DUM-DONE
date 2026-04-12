@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { useLanguage } from '@/lib/use-language'
+import { useLanguage } from '@/lib/language-provider'
 import { translations } from '@/lib/translations'
 import { useDispatch } from 'react-redux'
 import { addItem } from '@/lib/redux/slices/cartSlice'

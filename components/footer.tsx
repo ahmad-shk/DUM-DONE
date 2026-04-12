@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useLanguage } from '@/lib/use-language'
+import { useLanguage } from '@/lib/language-provider'
 import { translations } from '@/lib/translations'
 import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react'
 

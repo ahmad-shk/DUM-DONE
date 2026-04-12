@@ -7,6 +7,7 @@ import { MessageCircle, X } from 'lucide-react'
 export function WhatsAppContact() {
   const [showMenu, setShowMenu] = useState(false)
   const pathname = usePathname()
+
   const contacts = [
     {
       name: 'Customer Support',

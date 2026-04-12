@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ReduxProvider } from "@/lib/redux/provider"
+import { LanguageProvider } from "@/lib/language-provider"
 import { CartButton } from "@/components/cart-button"
 import { WhatsAppContact } from "@/components/whatsapp-contact"
 import { MobileNav } from "@/components/mobile-nav"
@@ -26,10 +27,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased pb-24 md:pb-0 overflow-x-hidden`} suppressHydrationWarning>
         <ReduxProvider>
-          {children}
-          <CartButton />
-          <WhatsAppContact />
-          <MobileNav />
+          <LanguageProvider>
+            {children}
+            <CartButton />
+            <WhatsAppContact />
+            <MobileNav />
+          </LanguageProvider>
         </ReduxProvider>
         <Analytics />
       </body>
