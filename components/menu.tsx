@@ -8,9 +8,12 @@ import { useLanguage } from '@/lib/language-context'
 import { translations } from '@/lib/translations'
 import { Star, ShoppingCart } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
+import { ItemDetailModal } from '@/components/item-detail-modal'
 
 export function Menu() {
   const [activeCategory, setActiveCategory] = useState('VIEW FULL MENU')
+  const [selectedItem, setSelectedItem] = useState<any>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const { lang } = useLanguage()
   const t = translations[lang].menu
   const { addItem } = useCart()
@@ -20,15 +23,23 @@ export function Menu() {
       ? t.items
       : t.items.filter((item: any) => item.category.toUpperCase() === activeCategory.toUpperCase())
 
-  const handleAddToCart = (item: any) => {
+  const handleAddToCart = (item: any, quantity: number = 1) => {
     const itemId = `menu-${item.name.toLowerCase().replace(/\s+/g, '-')}`
-    addItem({
-      id: itemId,
-      name: item.name,
-      price: item.price,
-      category: item.category,
-      image: item.image || '/chapli-kabab.png',
-    })
+    for (let i = 0; i < quantity; i++) {
+      addItem({
+        id: itemId,
+        name: item.name,
+        price: item.price,
+        category: item.category,
+        image: item.image || '/chapli-kabab.png',
+        description: item.description,
+      })
+    }
+  }
+
+  const handleImageClick = (item: any) => {
+    setSelectedItem(item)
+    setIsModalOpen(true)
   }
 
   return (
@@ -66,7 +77,10 @@ export function Menu() {
               key={item.name}
               className="group h-full bg-gray-50 dark:bg-[#0A0A0A] border-none rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
             >
-              <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-200 dark:bg-gray-900">
+              <div 
+                className="relative aspect-[4/5] w-full overflow-hidden bg-gray-200 dark:bg-gray-900 cursor-pointer"
+                onClick={() => handleImageClick(item)}
+              >
                 <Image
                   src={item.image || '/chapli-kabab.png'}
                   alt={item.name}
@@ -96,7 +110,7 @@ export function Menu() {
 
                 <button
                   onClick={() => handleAddToCart(item)}
-                  className="w-full mt-auto bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-3 rounded-lg transition-colors duration-200 text-xs md:text-sm flex items-center justify-center gap-2"
+                  className="w-full mt-auto bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-bold py-2 px-3 rounded-lg transition-all duration-200 text-xs md:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                 >
                   <ShoppingCart className="w-3.5 h-3.5" />
                   Add to Order
@@ -105,6 +119,14 @@ export function Menu() {
             </Card>
           ))}
         </div>
+
+        {/* Item Detail Modal */}
+        <ItemDetailModal
+          item={selectedItem}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAddToCart={handleAddToCart}
+        />
       </div>
     </section>
   )

@@ -17,10 +17,11 @@ export function CartButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-24 right-6 bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 z-[999] hover:scale-110 active:scale-95"
+        className="fixed bottom-24 md:bottom-6 right-4 md:right-6 bg-amber-600 hover:bg-amber-700 text-white p-2 md:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 z-[999] hover:scale-110 active:scale-95"
       >
-        <ShoppingCart className="w-6 h-6" />
-        <span className="font-bold text-lg">{totalItems}</span>
+        <ShoppingCart className="w-5 md:w-6 h-5 md:h-6" />
+        <span className="hidden md:inline font-bold text-lg">{totalItems}</span>
+        <span className="md:hidden font-bold text-sm">{totalItems}</span>
       </button>
       <CartDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>

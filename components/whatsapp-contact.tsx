@@ -50,13 +50,13 @@ export function WhatsAppContact() {
         {/* Main WhatsApp Button */}
         <button
           onClick={() => setShowMenu(!showMenu)}
-          className="relative bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-10"
+          className="relative bg-green-500 hover:bg-green-600 text-white p-2 md:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 z-10"
           aria-label="Contact us on WhatsApp"
         >
           {showMenu ? (
-            <X className="w-6 h-6" />
+            <X className="w-5 md:w-6 h-5 md:h-6" />
           ) : (
-            <MessageCircle className="w-6 h-6" />
+            <MessageCircle className="w-5 md:w-6 h-5 md:h-6" />
           )}
         </button>
 

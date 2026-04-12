@@ -75,6 +75,41 @@
   --ring: oklch(0.60 0.22 27);
 }
 
+/* Smooth transitions for better UX */
+* {
+  @apply transition-colors duration-200;
+}
+
+button, a {
+  @apply transition-all duration-300;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.75 0.15 80);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.70 0.15 80);
+}
+
+.dark::-webkit-scrollbar-thumb {
+  background: oklch(0.65 0.15 80);
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.70 0.15 80);
+}
+
 @theme inline {
   --font-sans: "Geist", "Geist Fallback";
   --font-mono: "Geist Mono", "Geist Mono Fallback";

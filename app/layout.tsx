@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { LanguageProvider } from "@/lib/language-context"
 import { FirebaseAuthProvider } from "@/lib/firebase-context"
 import { CartProvider } from "@/lib/cart-context"
+import { ReduxProvider } from "@/lib/redux/provider"
 import { CartButton } from "@/components/cart-button"
 import { WhatsAppContact } from "@/components/whatsapp-contact"
 import { MobileNav } from "@/components/mobile-nav"
@@ -26,17 +27,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased pb-24 md:pb-0`} suppressHydrationWarning>
-        <FirebaseAuthProvider>
-          <LanguageProvider>
-            <CartProvider>
-              {children}
-              <CartButton />
-              <WhatsAppContact />
-              <MobileNav />
-            </CartProvider>
-          </LanguageProvider>
-        </FirebaseAuthProvider>
+      <body className={`font-sans antialiased pb-24 md:pb-0 overflow-x-hidden`} suppressHydrationWarning>
+        <ReduxProvider>
+          <FirebaseAuthProvider>
+            <LanguageProvider>
+              <CartProvider>
+                {children}
+                <CartButton />
+                <WhatsAppContact />
+                <MobileNav />
+              </CartProvider>
+            </LanguageProvider>
+          </FirebaseAuthProvider>
+        </ReduxProvider>
         <Analytics />
       </body>
     </html>
