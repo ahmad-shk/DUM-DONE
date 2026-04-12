@@ -95,7 +95,7 @@ export default function OrderPage() {
 
   const handleSubmit = async (values: any) => {
     if (cartItems.length === 0) {
-      alert(lang === 'en' ? 'Please add items from menu' : '请从菜单中添加商品')
+      alert(lang === 'en' ? 'Please add items from menu' : 'براہ کرم مینو سے آئٹمز شامل کریں')
       return
     }
 
@@ -137,7 +137,7 @@ export default function OrderPage() {
         setCartItems([])
 
         // Show success message
-        alert(lang === 'en' ? 'Order placed successfully!' : '订单成功下达！')
+        alert(lang === 'en' ? 'Order placed successfully!' : 'آرڈر کامیابی سے دیا گیا!')
 
         // Redirect to menu
         setTimeout(() => {
@@ -147,7 +147,7 @@ export default function OrderPage() {
     } catch (error: any) {
       console.error('Error submitting order:', error)
       const errorMessage = error.response?.data?.message || 'Failed to place order'
-      alert(lang === 'en' ? errorMessage : '订单失败，请重试')
+      alert(lang === 'en' ? errorMessage : 'آرڈر ناکام ہو گیا، براہ کرم دوبارہ کوشش کریں')
     } finally {
       setIsSubmitting(false)
     }
@@ -168,10 +168,10 @@ export default function OrderPage() {
         {/* Page Header */}
         <div className="text-center mb-6 md:mb-10">
           <h1 className="text-2xl md:text-4xl font-bold text-black dark:text-white mb-2">
-            {lang === 'en' ? 'Your Order' : '您的订单'}
+            {lang === 'en' ? 'Your Order' : 'آپ کا آرڈر'}
           </h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">
-            {lang === 'en' ? 'Complete your order and enjoy delicious food' : '完成您的订单，享受美食'}
+            {lang === 'en' ? 'Complete your order and enjoy delicious food' : 'اپنا آرڈر مکمل کریں اور سستی کا ذائقہ لیں'}
           </p>
         </div>
 
@@ -185,7 +185,7 @@ export default function OrderPage() {
                 : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-700'
             }`}
           >
-            {lang === 'en' ? 'Place Order' : '下订单'}
+            {lang === 'en' ? 'Place Order' : 'آرڈر دیں'}
           </button>
           <button
             onClick={() => setActiveTab('history')}
@@ -195,7 +195,7 @@ export default function OrderPage() {
                 : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-700'
             }`}
           >
-            {lang === 'en' ? 'Order History' : '订单历史'}
+            {lang === 'en' ? 'Order History' : 'آرڈر کا تاریخ'}
           </button>
         </div>
 
@@ -206,14 +206,14 @@ export default function OrderPage() {
               <Card className="p-5 md:p-8 bg-white dark:bg-zinc-900 border-0 shadow-sm rounded-2xl">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg md:text-xl font-bold text-black dark:text-white">
-                    {lang === 'en' ? 'Delivery Details' : '配送详情'}
+                    {lang === 'en' ? 'Delivery Details' : 'ڈیلیوری کے تفصیلات'}
                   </h2>
                   <button
                     onClick={() => router.push('/menu')}
                     className="flex items-center gap-1.5 text-amber-600 hover:text-amber-700 text-sm font-medium"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    {lang === 'en' ? 'Add more' : '添加更多'}
+                    {lang === 'en' ? 'Add more' : 'مزید شامل کریں'}
                   </button>
                 </div>
 
@@ -233,13 +233,13 @@ export default function OrderPage() {
                       {/* Full Name */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                          {lang === 'en' ? 'Full Name' : '全名'} <span className="text-red-500">*</span>
+                          {lang === 'en' ? 'Full Name' : 'پورا نام'} <span className="text-red-500">*</span>
                         </label>
                         <Field
                           as="input"
                           type="text"
                           name="name"
-                          placeholder={lang === 'en' ? 'Enter your full name' : '输入您的全名'}
+                          placeholder={lang === 'en' ? 'Enter your full name' : 'اپنا پورا نام درج کریں'}
                           className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                             touched.name && errors.name
                               ? 'border-red-500'
@@ -257,13 +257,13 @@ export default function OrderPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                            {lang === 'en' ? 'Phone Number' : '电话'} <span className="text-red-500">*</span>
+                            {lang === 'en' ? 'Phone Number' : 'فون نمبر'} <span className="text-red-500">*</span>
                           </label>
                           <Field
                             as="input"
                             type="tel"
                             name="phone"
-                            placeholder={lang === 'en' ? 'e.g. 0300-1234567' : '输入您的电话'}
+                            placeholder={lang === 'en' ? 'e.g. 0300-1234567' : 'اپنا فون نمبر ڈالیں'}
                             className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                               touched.phone && errors.phone
                                 ? 'border-red-500'
@@ -279,13 +279,13 @@ export default function OrderPage() {
 
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                            {lang === 'en' ? 'Email (Optional)' : '电子邮件（可选）'}
+                            {lang === 'en' ? 'Email (Optional)' : 'ای میل（اختیاری）'}
                           </label>
                           <Field
                             as="input"
                             type="email"
                             name="email"
-                            placeholder={lang === 'en' ? 'you@example.com' : '输入您的电子邮件'}
+                            placeholder={lang === 'en' ? 'you@example.com' : 'اپنا ای میل ڈالیں'}
                             className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                               touched.email && errors.email
                                 ? 'border-red-500'
@@ -303,12 +303,12 @@ export default function OrderPage() {
                       {/* Address */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                          {lang === 'en' ? 'Delivery Address' : '配送地址'} <span className="text-red-500">*</span>
+                          {lang === 'en' ? 'Delivery Address' : 'ڈیلیوری کا پتہ'} <span className="text-red-500">*</span>
                         </label>
                         <Field
                           as="textarea"
                           name="address"
-                          placeholder={lang === 'en' ? 'House #, Street, Area, City' : '街道、建筑、公寓号'}
+                          placeholder={lang === 'en' ? 'House #, Street, Area, City' : 'سڑک، گھر نمبر، علاقہ، شہر'}
                           rows={2}
                           className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                             touched.address && errors.address
@@ -326,12 +326,12 @@ export default function OrderPage() {
                       {/* Special Instructions */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                          {lang === 'en' ? 'Special Instructions' : '特殊说明'}
+                          {lang === 'en' ? 'Special Instructions' : 'خصوصی اشارات'}
                         </label>
                         <Field
                           as="textarea"
                           name="notes"
-                          placeholder={lang === 'en' ? 'Any allergies or delivery notes...' : '任何过敏症或配送说明...'}
+                          placeholder={lang === 'en' ? 'Any allergies or delivery notes...' : ' کوئی الرجی یا ترسیل کی ہدایات...'}
                           rows={2}
                           className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all resize-none text-sm"
                         />
@@ -346,10 +346,10 @@ export default function OrderPage() {
                         {isSubmitting ? (
                           <div className="flex items-center justify-center gap-2">
                             <Spinner className="w-5 h-5" />
-                            {lang === 'en' ? 'Processing...' : '处理中...'}
+                            {lang === 'en' ? 'Processing...' : 'پروسیسنگ...'}
                           </div>
                         ) : (
-                          lang === 'en' ? 'Confirm Order' : '确认订单'
+                          lang === 'en' ? 'Confirm Order' : 'آرڈر کی تصدیق کریں۔'
                         )}
                       </Button>
                     </Form>
@@ -365,9 +365,9 @@ export default function OrderPage() {
                   <span className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center text-sm">
                     🛒
                   </span>
-                  {lang === 'en' ? 'Order Summary' : '订单摘要'}
+                  {lang === 'en' ? 'Order Summary' : 'آرڈر کا خلاصہ'}
                   <span className="ml-auto text-sm font-normal text-gray-500">
-                    {cartItems.length} {lang === 'en' ? 'items' : '项'}
+                    {cartItems.length} {lang === 'en' ? 'items' : 'آئٹمز'}
                   </span>
                 </h3>
 
@@ -377,13 +377,13 @@ export default function OrderPage() {
                       🍽️
                     </div>
                     <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm">
-                      {lang === 'en' ? 'Your cart is empty' : '您的购物车是空的'}
+                      {lang === 'en' ? 'Your cart is empty' : 'آپ کی گاڑی خالی ہے'}
                     </p>
                     <Button
                       onClick={() => router.push('/menu')}
                       className="bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl px-6"
                     >
-                      {lang === 'en' ? 'Browse Menu' : '浏览菜单'}
+                      {lang === 'en' ? 'Browse Menu' : 'مینو تلاش کریں'}
                     </Button>
                   </div>
                 ) : (
@@ -429,7 +429,7 @@ export default function OrderPage() {
                     <div className="border-t border-gray-100 dark:border-zinc-800 pt-4">
                       <div className="flex justify-between items-center">
                         <p className="text-base font-medium text-gray-600 dark:text-gray-400">
-                          {lang === 'en' ? 'Total' : '总计'}
+                          {lang === 'en' ? 'Total' : 'کل قیمت'}
                         </p>
                         <p className="text-2xl font-bold text-amber-600">
                           Rs. {getTotalPrice()}
@@ -445,13 +445,13 @@ export default function OrderPage() {
           /* Order History Tab */
           <div>
             <h2 className="text-2xl font-bold text-black dark:text-white mb-6">
-              {lang === 'en' ? 'Your Order History' : '您的订单历史'}
+              {lang === 'en' ? 'Your Order History' : 'آپ کا آرڈر کا تاریخ'}
             </h2>
 
             {orders.length === 0 ? (
               <Card className="p-8 text-center bg-gray-50 dark:bg-black/20">
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  {lang === 'en' ? 'No orders yet' : '还没有订单'}
+                  {lang === 'en' ? 'No orders yet' : 'ابھی تک کوئی آرڈر نہیں'}
                 </p>
               </Card>
             ) : (
@@ -478,13 +478,13 @@ export default function OrderPage() {
                     <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                       <div>
                         <p className="text-gray-600 dark:text-gray-400">
-                          {lang === 'en' ? 'Phone' : '电话'}
+                          {lang === 'en' ? 'Phone' : 'فون نمبر'}
                         </p>
                         <p className="text-black dark:text-white">{order.phone}</p>
                       </div>
                       <div>
                         <p className="text-gray-600 dark:text-gray-400">
-                          {lang === 'en' ? 'Status' : '状态'}
+                          {lang === 'en' ? 'Status' : 'حالت'}
                         </p>
                         <p className="text-black dark:text-white capitalize">
                           {order.status}
@@ -494,7 +494,7 @@ export default function OrderPage() {
 
                     <div className="border-t border-gray-300 dark:border-white/10 pt-4">
                       <p className="text-sm font-semibold text-black dark:text-white mb-2">
-                        {lang === 'en' ? 'Items' : '商品'}
+                        {lang === 'en' ? 'Items' : 'آئٹمز'}
                       </p>
                       <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                         {order.items.map((item, idx) => (
