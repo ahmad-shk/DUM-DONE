@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Card } from '@/components/ui/card'
@@ -161,27 +162,37 @@ export default function OrderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A0A0A] flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0A0A0A] flex flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
-        {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-white/10">
+      <main className="flex-1 container mx-auto px-4 py-6 md:py-10 pb-28 md:pb-10">
+        {/* Page Header */}
+        <div className="text-center mb-6 md:mb-10">
+          <h1 className="text-2xl md:text-4xl font-bold text-black dark:text-white mb-2">
+            {lang === 'en' ? 'Your Order' : '您的订单'}
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">
+            {lang === 'en' ? 'Complete your order and enjoy delicious food' : '完成您的订单，享受美食'}
+          </p>
+        </div>
+
+        {/* Tabs - Pill Style */}
+        <div className="flex justify-center gap-2 mb-8">
           <button
             onClick={() => setActiveTab('new')}
-            className={`pb-4 font-semibold transition-colors ${
+            className={`px-5 md:px-6 py-2.5 md:py-3 rounded-full text-sm md:text-base font-semibold transition-all duration-300 ${
               activeTab === 'new'
-                ? 'text-amber-600 border-b-2 border-amber-600'
-                : 'text-gray-600 dark:text-gray-400'
+                ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30'
+                : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-700'
             }`}
           >
             {lang === 'en' ? 'Place Order' : '下订单'}
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`pb-4 font-semibold transition-colors ${
+            className={`px-5 md:px-6 py-2.5 md:py-3 rounded-full text-sm md:text-base font-semibold transition-all duration-300 ${
               activeTab === 'history'
-                ? 'text-amber-600 border-b-2 border-amber-600'
-                : 'text-gray-600 dark:text-gray-400'
+                ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30'
+                : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-700'
             }`}
           >
             {lang === 'en' ? 'Order History' : '订单历史'}
@@ -189,29 +200,22 @@ export default function OrderPage() {
         </div>
 
         {activeTab === 'new' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
             {/* Form Section */}
-            <div className="lg:col-span-2">
-              <div className="mb-6">
-                <button
-                  onClick={() => router.push('/menu')}
-                  className="flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold mb-4"
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                  {lang === 'en' ? 'Back to Menu' : '返回菜单'}
-                </button>
-                <h1 className="text-4xl font-bold text-black dark:text-white mb-2">
-                  {lang === 'en' ? 'Checkout' : '结账'}
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {lang === 'en' ? 'Complete your order details below' : '在下面完成您的订单详情'}
-                </p>
-              </div>
-
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-amber-600 border-b-2 border-amber-600 pb-2 mb-6">
-                  {lang === 'en' ? 'Order Details' : '订单详情'}
-                </h2>
+            <div className="lg:col-span-3 order-2 lg:order-1">
+              <Card className="p-5 md:p-8 bg-white dark:bg-zinc-900 border-0 shadow-sm rounded-2xl">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg md:text-xl font-bold text-black dark:text-white">
+                    {lang === 'en' ? 'Delivery Details' : '配送详情'}
+                  </h2>
+                  <button
+                    onClick={() => router.push('/menu')}
+                    className="flex items-center gap-1.5 text-amber-600 hover:text-amber-700 text-sm font-medium"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    {lang === 'en' ? 'Add more' : '添加更多'}
+                  </button>
+                </div>
 
                 <Formik
                   initialValues={{
@@ -225,10 +229,10 @@ export default function OrderPage() {
                   onSubmit={handleSubmit}
                 >
                   {({ errors, touched, isSubmitting: formSubmitting }) => (
-                    <Form className="space-y-6">
+                    <Form className="space-y-5">
                       {/* Full Name */}
                       <div>
-                        <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                           {lang === 'en' ? 'Full Name' : '全名'} <span className="text-red-500">*</span>
                         </label>
                         <Field
@@ -236,100 +240,100 @@ export default function OrderPage() {
                           type="text"
                           name="name"
                           placeholder={lang === 'en' ? 'Enter your full name' : '输入您的全名'}
-                          className={`w-full px-4 py-2 rounded-lg bg-white dark:bg-black border ${
+                          className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                             touched.name && errors.name
                               ? 'border-red-500'
-                              : 'border-gray-300 dark:border-white/20'
-                          } text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none transition`}
+                              : 'border-gray-200 dark:border-zinc-700'
+                          } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
                         />
                         <ErrorMessage
                           name="name"
                           component="p"
-                          className="text-red-500 text-sm mt-1"
+                          className="text-red-500 text-xs mt-1"
                         />
                       </div>
 
                       {/* Phone & Email */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                             {lang === 'en' ? 'Phone Number' : '电话'} <span className="text-red-500">*</span>
                           </label>
                           <Field
                             as="input"
                             type="tel"
                             name="phone"
-                            placeholder={lang === 'en' ? 'Enter your phone number' : '输入您的电话'}
-                            className={`w-full px-4 py-2 rounded-lg bg-white dark:bg-black border ${
+                            placeholder={lang === 'en' ? 'e.g. 0300-1234567' : '输入您的电话'}
+                            className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                               touched.phone && errors.phone
                                 ? 'border-red-500'
-                                : 'border-gray-300 dark:border-white/20'
-                            } text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none transition`}
+                                : 'border-gray-200 dark:border-zinc-700'
+                            } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
                           />
                           <ErrorMessage
                             name="phone"
                             component="p"
-                            className="text-red-500 text-sm mt-1"
+                            className="text-red-500 text-xs mt-1"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                             {lang === 'en' ? 'Email (Optional)' : '电子邮件（可选）'}
                           </label>
                           <Field
                             as="input"
                             type="email"
                             name="email"
-                            placeholder={lang === 'en' ? 'Enter your email' : '输入您的电子邮件'}
-                            className={`w-full px-4 py-2 rounded-lg bg-white dark:bg-black border ${
+                            placeholder={lang === 'en' ? 'you@example.com' : '输入您的电子邮件'}
+                            className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                               touched.email && errors.email
                                 ? 'border-red-500'
-                                : 'border-gray-300 dark:border-white/20'
-                            } text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none transition`}
+                                : 'border-gray-200 dark:border-zinc-700'
+                            } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
                           />
                           <ErrorMessage
                             name="email"
                             component="p"
-                            className="text-red-500 text-sm mt-1"
+                            className="text-red-500 text-xs mt-1"
                           />
                         </div>
                       </div>
 
                       {/* Address */}
                       <div>
-                        <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                           {lang === 'en' ? 'Delivery Address' : '配送地址'} <span className="text-red-500">*</span>
                         </label>
                         <Field
                           as="textarea"
                           name="address"
-                          placeholder={lang === 'en' ? 'Street, Building, Apartment No.' : '街道、建筑、公寓号'}
-                          rows={3}
-                          className={`w-full px-4 py-2 rounded-lg bg-white dark:bg-black border ${
+                          placeholder={lang === 'en' ? 'House #, Street, Area, City' : '街道、建筑、公寓号'}
+                          rows={2}
+                          className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
                             touched.address && errors.address
                               ? 'border-red-500'
-                              : 'border-gray-300 dark:border-white/20'
-                          } text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none transition`}
+                              : 'border-gray-200 dark:border-zinc-700'
+                          } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all resize-none text-sm`}
                         />
                         <ErrorMessage
                           name="address"
                           component="p"
-                          className="text-red-500 text-sm mt-1"
+                          className="text-red-500 text-xs mt-1"
                         />
                       </div>
 
                       {/* Special Instructions */}
                       <div>
-                        <label className="block text-sm font-semibold text-black dark:text-white mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                           {lang === 'en' ? 'Special Instructions' : '特殊说明'}
                         </label>
                         <Field
                           as="textarea"
                           name="notes"
                           placeholder={lang === 'en' ? 'Any allergies or delivery notes...' : '任何过敏症或配送说明...'}
-                          rows={4}
-                          className="w-full px-4 py-2 rounded-lg bg-white dark:bg-black border border-gray-300 dark:border-white/20 text-black dark:text-white focus:ring-2 focus:ring-amber-600 outline-none transition"
+                          rows={2}
+                          className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all resize-none text-sm"
                         />
                       </div>
 
@@ -337,7 +341,7 @@ export default function OrderPage() {
                       <Button
                         type="submit"
                         disabled={formSubmitting || isSubmitting}
-                        className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors disabled:opacity-50"
+                        className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3.5 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 shadow-lg shadow-amber-600/20 hover:shadow-xl hover:shadow-amber-600/30 text-base"
                       >
                         {isSubmitting ? (
                           <div className="flex items-center justify-center gap-2">
@@ -351,72 +355,86 @@ export default function OrderPage() {
                     </Form>
                   )}
                 </Formik>
-              </div>
+              </Card>
             </div>
 
             {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <Card className="p-6 bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-2xl sticky top-24">
-                <h3 className="text-2xl font-bold text-black dark:text-white mb-6 flex items-center gap-2">
-                  📦 {lang === 'en' ? 'Order Summary' : '订单摘要'}
+            <div className="lg:col-span-2 order-1 lg:order-2">
+              <Card className="p-5 md:p-6 bg-white dark:bg-zinc-900 border-0 shadow-sm rounded-2xl sticky top-24">
+                <h3 className="text-lg md:text-xl font-bold text-black dark:text-white mb-4 flex items-center gap-2">
+                  <span className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center text-sm">
+                    🛒
+                  </span>
+                  {lang === 'en' ? 'Order Summary' : '订单摘要'}
+                  <span className="ml-auto text-sm font-normal text-gray-500">
+                    {cartItems.length} {lang === 'en' ? 'items' : '项'}
+                  </span>
                 </h3>
 
                 {cartItems.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <div className="w-16 h-16 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                      🍽️
+                    </div>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm">
                       {lang === 'en' ? 'Your cart is empty' : '您的购物车是空的'}
                     </p>
                     <Button
                       onClick={() => router.push('/menu')}
-                      className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold"
+                      className="bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl px-6"
                     >
                       {lang === 'en' ? 'Browse Menu' : '浏览菜单'}
                     </Button>
                   </div>
                 ) : (
                   <>
-                    <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                    <div className="space-y-3 mb-4 max-h-60 md:max-h-80 overflow-y-auto pr-1">
                       {cartItems.map((item) => {
                         const price = parseFloat(item.price.replace(/[^0-9.]/g, '') || '0')
-                        const itemTotal = (price * item.quantity).toFixed(2)
+                        const itemTotal = (price * item.quantity).toFixed(0)
 
                         return (
                           <div
                             key={item.id}
-                            className="flex justify-between items-start p-3 bg-white dark:bg-white/5 rounded-lg border border-gray-200 dark:border-white/10"
+                            className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl"
                           >
-                            <div className="flex-1">
-                              <p className="font-semibold text-black dark:text-white">
+                            {item.image && (
+                              <div className="w-12 h-12 rounded-lg bg-gray-200 dark:bg-zinc-700 overflow-hidden flex-shrink-0">
+                                <Image
+                                  src={item.image}
+                                  alt={item.name}
+                                  width={48}
+                                  height={48}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm text-black dark:text-white truncate">
                                 {item.name}
                               </p>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {lang === 'en' ? 'Qty' : '数量'}: {item.quantity}
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                {item.price} x {item.quantity}
                               </p>
                             </div>
-                            <div className="text-right">
-                              <p className="font-semibold text-amber-600">
-                                {lang === 'en' ? 'Rs.' : '¥'}{itemTotal}
-                              </p>
-                              <p className="text-xs text-gray-600 dark:text-gray-400">
-                                {item.price} each
-                              </p>
-                            </div>
+                            <p className="font-bold text-amber-600 text-sm">
+                              Rs.{itemTotal}
+                            </p>
                           </div>
                         )
                       })}
                     </div>
 
-                    {/* Divider */}
-                    <div className="border-t border-gray-300 dark:border-white/10 my-4" />
-
                     {/* Total */}
-                    <div className="flex justify-between items-center mb-6">
-                      <p className="text-lg font-bold text-black dark:text-white">
-                        {lang === 'en' ? 'Total' : '总计'}
-                      </p>
-                      <p className="text-2xl font-bold text-amber-600">
-                        {lang === 'en' ? 'Rs.' : '¥'}{getTotalPrice()}
-                      </p>
+                    <div className="border-t border-gray-100 dark:border-zinc-800 pt-4">
+                      <div className="flex justify-between items-center">
+                        <p className="text-base font-medium text-gray-600 dark:text-gray-400">
+                          {lang === 'en' ? 'Total' : '总计'}
+                        </p>
+                        <p className="text-2xl font-bold text-amber-600">
+                          Rs. {getTotalPrice()}
+                        </p>
+                      </div>
                     </div>
                   </>
                 )}

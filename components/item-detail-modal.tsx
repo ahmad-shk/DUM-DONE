@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import { X, Plus, Minus } from 'lucide-react'
-import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog'
+import { useState, useEffect } from 'react'
+import { X, Plus, Minus, ShoppingCart } from 'lucide-react'
+import Image from 'next/image'
 
 interface MenuItem {
-  id: string
+  id?: string
   name: string
   price: string | number
   description?: string
@@ -29,6 +29,38 @@ export function ItemDetailModal({
 }: ItemDetailModalProps) {
   const [quantity, setQuantity] = useState(1)
 
+  // Reset quantity when modal opens with new item
+  useEffect(() => {
+    if (isOpen) {
+      setQuantity(1)
+    }
+  }, [isOpen, item])
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
+  // Listen for close event from cart button
+  useEffect(() => {
+    const handleCloseModal = () => {
+      if (isOpen) {
+        onClose()
+      }
+    }
+    window.addEventListener('closeItemModal', handleCloseModal)
+    return () => {
+      window.removeEventListener('closeItemModal', handleCloseModal)
+    }
+  }, [isOpen, onClose])
+
   const handleAddToCart = () => {
     if (item) {
       onAddToCart(item, quantity)
@@ -38,113 +70,122 @@ export function ItemDetailModal({
   }
 
   const handleQuantityChange = (value: number) => {
-    if (value > 0) {
+    if (value > 0 && value <= 99) {
       setQuantity(value)
     }
   }
 
-  if (!item) return null
+  if (!item || !isOpen) return null
 
   const price = typeof item.price === 'string' 
     ? parseFloat(item.price.replace(/[^0-9.-]+/g, '')) 
     : item.price
 
-  const totalPrice = (price * quantity).toFixed(2)
+  const totalPrice = Math.round(price * quantity)
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-2xl p-0 border-0 bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-2xl">
-        {/* Close Button */}
-        <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-white dark:bg-gray-800 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-          <X className="w-5 h-5 text-black dark:text-white" />
-        </DialogClose>
+    <>
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] animate-in fade-in duration-200"
+        onClick={onClose}
+      />
+      
+      {/* Modal */}
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 pointer-events-none">
+        <div 
+          className="relative w-full max-w-[340px] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto animate-in zoom-in-95 fade-in duration-200"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4 text-white" />
+          </button>
 
-        <div className="flex flex-col md:flex-row gap-6 p-6 md:p-8">
-          {/* Image Section */}
-          <div className="flex-shrink-0 w-full md:w-80">
-            <div className="relative bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden aspect-square flex items-center justify-center">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-              {item.badge && (
-                <div className="absolute top-4 left-4 bg-amber-600 text-white font-bold px-4 py-2 rounded-full text-sm">
-                  {item.badge}
-                </div>
-              )}
-            </div>
+          {/* Image Section - Compact */}
+          <div className="relative w-full h-44 bg-zinc-100 dark:bg-zinc-800">
+            <Image
+              src={item.image || '/placeholder.jpg'}
+              alt={item.name}
+              fill
+              className="object-cover"
+              sizes="340px"
+              priority
+            />
+            {item.badge && (
+              <span className="absolute top-2 left-2 bg-amber-500 text-white font-medium px-2 py-0.5 rounded-full text-[10px]">
+                {item.badge}
+              </span>
+            )}
           </div>
 
-          {/* Details Section */}
-          <div className="flex-1 flex flex-col justify-between">
-            {/* Header */}
-            <div className="space-y-4">
-              {item.category && (
-                <p className="text-sm font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wide">
-                  {item.category}
-                </p>
-              )}
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
-                  {item.name}
-                </h2>
-                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                  RS {typeof item.price === 'string' ? item.price : `${item.price}`}
-                </p>
-              </div>
+          {/* Content Section - Compact */}
+          <div className="p-4">
+            {/* Category */}
+            {item.category && (
+              <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+                {item.category}
+              </span>
+            )}
 
-              {/* Description */}
-              {item.description && (
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
-                  {item.description}
-                </p>
-              )}
+            {/* Title & Price Row */}
+            <div className="flex items-start justify-between gap-2 mt-1 mb-2">
+              <h2 className="text-base font-bold text-zinc-900 dark:text-white leading-tight">
+                {item.name}
+              </h2>
+              <span className="text-base font-bold text-amber-600 dark:text-amber-500 whitespace-nowrap">
+                Rs. {price}
+              </span>
             </div>
 
-            {/* Quantity and Action */}
-            <div className="space-y-4 mt-6">
-              {/* Quantity Selector */}
-              <div className="flex items-center gap-4 bg-gray-100 dark:bg-gray-800 rounded-xl p-4 w-fit">
+            {/* Description - Truncated */}
+            {item.description && (
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed line-clamp-2 mb-3">
+                {item.description}
+              </p>
+            )}
+
+            {/* Quantity and Add to Cart */}
+            <div className="flex items-center gap-3">
+              {/* Quantity Selector - Compact */}
+              <div className="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-lg">
                 <button
                   onClick={() => handleQuantityChange(quantity - 1)}
-                  className="bg-amber-600 hover:bg-amber-700 text-white p-2 rounded-lg transition-all duration-200 active:scale-95"
+                  disabled={quantity <= 1}
+                  className="w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 disabled:opacity-30 transition-colors"
                   aria-label="Decrease quantity"
                 >
-                  <Minus className="w-5 h-5" />
+                  <Minus className="w-3.5 h-3.5" />
                 </button>
-                <input
-                  type="number"
-                  min="1"
-                  value={quantity}
-                  onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
-                  className="w-16 text-center font-bold text-lg bg-transparent text-black dark:text-white border-0 outline-none"
-                />
+                <span className="w-6 text-center text-sm font-bold text-zinc-900 dark:text-white">
+                  {quantity}
+                </span>
                 <button
                   onClick={() => handleQuantityChange(quantity + 1)}
-                  className="bg-amber-600 hover:bg-amber-700 text-white p-2 rounded-lg transition-all duration-200 active:scale-95"
+                  disabled={quantity >= 99}
+                  className="w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 disabled:opacity-30 transition-colors"
                   aria-label="Increase quantity"
                 >
-                  <Plus className="w-5 h-5" />
+                  <Plus className="w-3.5 h-3.5" />
                 </button>
-              </div>
-
-              {/* Total Price */}
-              <div className="text-xl font-bold text-black dark:text-white">
-                Total: <span className="text-amber-600 dark:text-amber-400">RS {totalPrice}</span>
               </div>
 
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 text-lg shadow-lg hover:shadow-xl"
+                className="flex-1 h-9 bg-amber-600 hover:bg-amber-700 active:scale-[0.98] text-white text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-1.5"
               >
-                Add to Order
+                <ShoppingCart className="w-3.5 h-3.5" />
+                <span>Add Rs. {totalPrice}</span>
               </button>
             </div>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </>
   )
 }
