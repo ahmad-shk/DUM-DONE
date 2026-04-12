@@ -76,12 +76,12 @@ export default function OrderPage() {
       .toFixed(2)
   }
 
-const handleRemoveItem = (itemId: string) => {
-  const updatedItems = cartItems.filter(item => item.id !== itemId)
-  setCartItems(updatedItems)
-  // Update both Redux and localStorage
-  dispatch(removeItem(itemId))
-  localStorage.setItem('cart', JSON.stringify(updatedItems))
+  const handleRemoveItem = (itemId: string) => {
+    const updatedItems = cartItems.filter(item => item.id !== itemId)
+    setCartItems(updatedItems)
+    // Update both Redux and localStorage
+    dispatch(removeItem(itemId))
+    localStorage.setItem('cart', JSON.stringify(updatedItems))
   }
 
   const handleSubmit = async (values: any) => {
@@ -121,10 +121,10 @@ const handleRemoveItem = (itemId: string) => {
       // Check if response status is 200 for success
       if (response.status === 200) {
         // Show success popup
-        const successMessage = lang === 'en' 
-          ? '✓ Order Placed Successfully!' 
+        const successMessage = lang === 'en'
+          ? '✓ Order Placed Successfully!'
           : '✓ آرڈر کامیابی سے دیا گیا!'
-        
+
         // Create and show success dialog
         const dialog = document.createElement('div')
         dialog.className = 'fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm'
@@ -143,13 +143,13 @@ const handleRemoveItem = (itemId: string) => {
           </div>
         `
         document.body.appendChild(dialog)
-        
+
         // Clear Redux cart
         dispatch(clearCart())
 
         // Clear localStorage
         localStorage.removeItem('cart')
-        
+
         // Clear local state
         setCartItems([])
 
@@ -178,7 +178,7 @@ const handleRemoveItem = (itemId: string) => {
       }
     } catch (error: any) {
       console.error('Error submitting order:', error)
-      
+
       // Show error popup for network/server errors
       const errorDialog = document.createElement('div')
       errorDialog.className = 'fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm'
@@ -263,11 +263,10 @@ const handleRemoveItem = (itemId: string) => {
                         type="text"
                         name="name"
                         placeholder={lang === 'en' ? 'Enter your full name' : 'اپنا پورا نام درج کریں'}
-                        className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
-                          touched.name && errors.name
+                        className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${touched.name && errors.name
                             ? 'border-red-500'
                             : 'border-gray-200 dark:border-zinc-700'
-                        } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
+                          } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
                       />
                       <ErrorMessage
                         name="name"
@@ -287,11 +286,10 @@ const handleRemoveItem = (itemId: string) => {
                           type="tel"
                           name="phone"
                           placeholder={lang === 'en' ? 'e.g. 0300-1234567' : 'اپنا فون نمبر ڈالیں'}
-                          className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
-                            touched.phone && errors.phone
+                          className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${touched.phone && errors.phone
                               ? 'border-red-500'
                               : 'border-gray-200 dark:border-zinc-700'
-                          } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
+                            } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
                         />
                         <ErrorMessage
                           name="phone"
@@ -309,11 +307,10 @@ const handleRemoveItem = (itemId: string) => {
                           type="email"
                           name="email"
                           placeholder={lang === 'en' ? 'you@example.com' : 'اپنا ای میل ڈالیں'}
-                          className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
-                            touched.email && errors.email
+                          className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${touched.email && errors.email
                               ? 'border-red-500'
                               : 'border-gray-200 dark:border-zinc-700'
-                          } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
+                            } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all text-sm`}
                         />
                         <ErrorMessage
                           name="email"
@@ -333,11 +330,10 @@ const handleRemoveItem = (itemId: string) => {
                         name="address"
                         placeholder={lang === 'en' ? 'House #, Street, Area, City' : 'سڑک، گھر نمبر، علاقہ، شہر'}
                         rows={2}
-                        className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${
-                          touched.address && errors.address
+                        className={`w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 border ${touched.address && errors.address
                             ? 'border-red-500'
                             : 'border-gray-200 dark:border-zinc-700'
-                        } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all resize-none text-sm`}
+                          } text-black dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all resize-none text-sm`}
                       />
                       <ErrorMessage
                         name="address"
@@ -446,7 +442,8 @@ const handleRemoveItem = (itemId: string) => {
                             </p>
                             <button
                               onClick={() => handleRemoveItem(item.id)}
-                              className="p-1.5 rounded-lg bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                              // 'opacity-0' aur 'group-hover:opacity-100' ko hata diya gaya hai
+                              className="p-1.5 rounded-lg bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all duration-200"
                               title={lang === 'en' ? 'Remove item' : 'آئٹم ہٹائیں'}
                             >
                               <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
